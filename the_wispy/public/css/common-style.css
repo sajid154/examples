@@ -1,0 +1,33 @@
+#signup-form {display:none !important;}
+#register-form form .register-btn {text-align:center; margin-bottom:15px !important;}
+#register-form form .register-btn .btn-primary:focus {box-shadow: 0 0 0 .2rem #ec008cab;}
+#register-form form .btn-primary {
+padding: 13px 30px;
+background: #ec008c;
+margin-top: 0px;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+border: 1px solid #ec008c;
+border-radius: 4px}
+#mega-menu-item-358 a {background:transparent !important;}
+#register-form form .btn-primary:hover {   background-color: #fff;
+    border-color: #ec008c;
+    color: #ec008c;}
+#register-form form .form-control {border:1px solid #979797; border-radius:none;}
+#register-form form .form-group {margin-bottom:26px;}
+#register-form form .form-group label {font-size:14px; color:#666; margin-bottom:7px;}
+#register-form form .form-control::placeholder {color:#979797; font-size:14px;}
+#register-form form .form-control:focus{box-shadow: none; border:1px solid #979797;}
+#register-form form h3 {color:#3b3b3b; font-size:18px; padding-bottom:30px; text-align:center; font-weight:400; border-radius:4px;}
+#register-form form {max-width:420px; margin:0px auto; box-shadow: 0 0 15px 0 rgba(153,153,153,.4); padding: 24px 36px 17px 34px}
+.already_have_account {text-align:center; margin-top:30px;}
+.agreed_user p {font-size:13px; text-align:center;}
+#remember {position:relative;}
+.dnthave_account p {font-size:13px; text-align:center;}
+.already_have_account p {font-size:13px; text-align:center;}
+.btn.btn-link.forget_password {font-size:14px; color:#666; padding-right:0px; float:right;}
+.col-md-6.setup{width: 50%;}
+/* Resposive  */
+@media screen and (max-width : 430px) {
+    .btn.btn-link.forget_password{padding: 0px;}
+    .col-md-6.setup{padding: 0px;}
+}

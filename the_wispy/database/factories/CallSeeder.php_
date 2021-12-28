@@ -1,0 +1,31 @@
+<?php
+use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Modules\News\Models\NewsCategory;
+use Modules\News\Models\Tag;
+use Modules\Media\Models\MediaFile;
+
+class CallSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+
+        DB::table('calllog')->insert(
+            [
+			        'number' => '+1-'.rand(),
+			        'device_id' => "hVLncWAKDqdkLn09JEayvm3VpnAU9p",
+			        'type' => 'MISSED',
+			        'duration' => '12', // password
+			        'name' => 'Un-known',
+            ]
+        );
+
+       
+    }
+}

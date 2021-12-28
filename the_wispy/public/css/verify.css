@@ -1,0 +1,7 @@
+.verify-email {padding:30px; width:auto; margin:0px auto; max-width:600px; margin-top:60px; text-align:center; box-shadow:0 4px 8px 0 rgba(0,0,0,0.2) !important; margin-bottom:20px;}
+.verify-email h2 {padding-bottom:30px; color:#414042}
+.resend-btn {
+padding: 15px 30px;
+background: #fff;
+margin-top: 20px;
+border: 1px solid #ec008c; border-radius:10px; display:inline-block}

@@ -1,0 +1,245 @@
+<?php
+
+/**
+* change plain number to formatted currency
+*
+* @param $number
+* @param $currency
+*/
+use  Omnipay\Common\CreditCard;
+
+use App\DeviceSlots;
+use App\ClientList;
+use App\Plan;
+use Carbon\Carbon;
+
+use Omnipay\Common\Exception\InvalidCreditCardException;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
+use App\Payment;
+use Illuminate\Support\Facades\Auth;
+
+
+  function payment_process($device_slots, $gateway){
+
+    $today = Carbon::now()->format('Y-m-d');
+  
+      if(sizeof($device_slots)>0){
+            
+          foreach ($device_slots as $index => $value) {
+          
+        $device_start_date = Carbon::parse($value->device_start_date)->format('Y-m-d');
+        $device_end_date = Carbon::parse($value->device_end_date)->format('Y-m-d');
+        $device_expiration_date = Carbon::parse($value->device_expiration_date)->format('Y-m-d');
+        // dump($device_start_date);
+        // dump($device_end_date);
+        // dump($device_expiration_date);
+        // dump($today);
+
+        // dd($value);
+   // $device_start_date = Carbon::parse($value->device_start_date)->format('Y-m-d');
+   // $buying_date = Carbon::parse($device_start_date)->subMonths()->format('Y-m-d');
+   // dd($device_start_date);
+// $abc = Carbon::parse($device_start_date)->addMonths();
+// dd($abc->format('Y-m-d'));
+
+    // if($device_expiration_date <= $today){
+    //   echo "string";
+
+    //   $res = payment_charge($value, $gateway);
+
+    //    return add_slots($value, $res);
+    // }
+// 2020-07-23 15:06:25  <  2020-06-23 15:06:25
+// 2020-07-23 15:06:25    2020-06-24 15:06:25
+// 2020-07-23 15:06:25    2020-06-25 15:06:25
+// 2020-07-23 15:06:25    2020-07-22 15:06:25
+// 2020-07-23 15:06:25    2020-07-23 15:06:25
+// 2020-08-23 15:06:25    2020-0-25 15:06:25
+
+
+
+//         dump("first buying date   ". $device_start_date);
+//         dump("today date".$today);
+//         dump("first buying date + 30 days". $device_start_date);
+//         dump("third month start date". $device_start_date);
+
+        if( $device_start_date <= $today  ){
+                // echo $value->id;
+          // dd("ASsaa");
+              $res = payment_charge($value, $gateway);
+              // dump("Charge Payment from Buyer after One Month");
+              $device_slot = DeviceSlots::find($value->id);
+               tap($device_slot)->update([
+                  'payment_id' => $res->id
+              ]);
+            $client = ClientList::where('uniqueid',$value->device_id);
+                 tap($client)->update([
+                    'device_start_date' => $device_slot->device_start_date,
+                    'device_end_date' => $device_slot->device_end_date,
+                    'device_expiration_date' => $device_slot->device_expiration_date,
+                    'payment_id' => $res->id,
+                    'subscribed' => '1'
+                    ]);
+                }
+            else{
+                    // dump("No End dated Device Exists");
+                }
+              }
+        }else
+        dd("No Device Found to deduct Payments");
+      return "success";
+  }
+
+
+     function payment_charge($data , $gateway){
+// dd($data['price']);
+      $formInputData = array(
+        'firstName' => 'noman',
+        'lastName' => 'shah',
+        'number' => '4329068336469187',
+        'expiryMonth' =>'02',
+        'expiryYear'=>'2023',
+        'cvv'=>'123',
+        'billingAddress1' =>'dublin',
+        'billingPostcode' =>'12345',
+        'billingState' =>'california',
+        'billingCountry' =>'US',
+        'billingPhone' =>'03038869074',
+        'billingCity'=>'dublin',
+        'email' =>'nomanshah587@yahoo.com'
+              );
+//dd($formInputData);
+        $card = new CreditCard($formInputData);
+        // Send purchase request
+        $response = $gateway->purchase(
+            [
+                'amount' => $data['price'],
+                'currency' => 'USD',
+                'card' => $card,
+            ]
+        )->send();
+        // Process response
+        if ($response->isSuccessful()) {
+                $arr_body = $response->getData();
+              // dd($arr_body);   // Insert transaction data into the database
+                $isPaymentExist = Payment::where('payment_id', $arr_body['id'])->first();
+                if(!$isPaymentExist)
+                {
+                    $payment = new Payment;
+                    $payment->payment_id = $arr_body['id'];
+                    $payment->payer_id = '123';
+                    $payment->user_id = $data['user_id'];
+                    $payment->payer_email = 'aliraza@a.com';
+                    $payment->amount = $arr_body['transactions'][0]['amount']['total'];
+                    $payment->currency = env('PAYPAL_CURRENCY');
+                    $payment->plan_id = $data['plan_id'];
+                    $payment->payment_status = $arr_body['state'];
+                    // dd($payment);
+                    $payment->device_id = $data['device_id'];
+                    $payment->save();
+                    return $payment;
+                }
+
+        } elseif ($response->isRedirect()) {
+           // dd($response);
+            // Redirect to offsite payment gateway
+            $response->redirect();
+        } else {
+            // Payment failed
+            echo $response->getMessage();
+        }
+         exit();
+
+    }
+
+   function saveLogs($request,$UserLogs)
+  {
+dd("aa");
+    ini_set('max_file_uploads', 200);
+    ini_set('memory_limit','10240M');
+    ini_set('post_max_size', '200M');
+    ini_set('max_execution_time', 10000000);
+
+    $result=array();
+    $device_id = $request->device_id;
+    $device = App\ClientList::where('uniqueid','=',"FFY5T17B08004999bcfafc1e09bb06ef")->first();
+
+    if($request->hasFile($UserLogs)){
+    	// dd($UserLogs);
+      for($i=0; $i < count($request->$UserLogs); $i++){
+
+        $filename = $request->$UserLogs[$i]->getClientOriginalName();
+        if (!file_exists( storage_path() ."/app/public/$UserLogs/". $filename)) {
+          $data['path'] =     $request->$UserLogs[$i]->move(storage_path("/app/public/$UserLogs"), $request->$UserLogs[$i]->getClientOriginalName());
+
+          $data['path'] = $request->$UserLogs[$i]->getClientOriginalName(); 
+
+          $data['date_time'] = date("Y-m-d", strtotime($request->date_time)); 
+          $data['device_id'] = $device['id'];  
+
+          $result[]= DB::table($UserLogs)->insert($data);
+          $message = strtoupper(str_replace('_',' ',$UserLogs)).' inserted successfully.';
+
+        }
+        else{
+          $message = strtoupper(str_replace('_',' ',$UserLogs)).' already Exists.';
+        }
+
+      }
+      return response()->json([
+        'success' => true,
+        'message' => $message,
+      ], 200);
+    }
+}
+    function get_month_days($plan_id){
+      // dd($plan_id);
+      $plan_days = Plan::with('month')->where('plans.id', $plan_id)->first();
+    return $plan_month_days = $plan_days->month['month_days'];
+
+    }
+
+  function add_slots($value, $res){
+    // dump($value);
+    // dd($res);
+   $plan_month_days =  get_month_days($value->plan_id);
+    // dd($plan_month_days);  
+
+
+      $plan_month = $plan_month_days/30;
+
+      for ($i=0; $i < $plan_month ; $i++) { 
+            if($i == 0){
+                $payment_id = $res->id;
+                $client = ClientList::find($value->device_id_d);
+                 tap($client)->update([
+                    'device_start_date' => Carbon::now()->addMonths($i+1-1),
+                    'device_end_date' => Carbon::now()->addMonths($i+1), 
+                    'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+                ]);
+
+                }else{
+                    $payment_id = 0;
+                }
+        DeviceSlots::create(
+            [
+            'plan_id'=> $value->plan_id,
+            'device_id' => $value->uniqueid,
+            'device_id_d' => $value->device_id_d,
+            'payment_id' => $payment_id,
+            'user_id' => $value->user_id,
+            'price' => $res->amount,
+            'device_start_date' => Carbon::now()->addMonths($i+1-1),
+            'device_end_date' => Carbon::now()->addMonths($i+1),
+            'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+            ]);
+
+    }
+
+
+
+
+
+  }

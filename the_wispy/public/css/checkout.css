@@ -1,0 +1,340 @@
+.thanku-page {/*background:url('https://www.thewispy.com/wp-content/uploads/2020/07/Thank-you.jpg') no-repeat;*/ background-size: cover; min-height:500px; background-position:center;}
+.main_wrapper {overflow:hidden;width: 100%;}
+/*.checkout-new .container {overflow:auto;}*/ 
+.thanku-box {  top: 150px;
+    max-width: 600px;
+    margin: 0px auto;
+    color: #ffff;
+    text-align: center;
+    padding: 70px;
+    border-radius: 4px;
+    margin-top: 100px;
+    border: 1px solid #bcbcbc;} 
+.thanku-box  h2 {color: #232323;font-size: 24px;font-weight: 700;}
+.thanku-box a {
+     margin-right: 0px;
+    padding: 15px 30px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background: #ec008c;
+    border: 1px solid #ec008c;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+}
+.field {padding: 10px !important;
+background: #fff !important;
+border: 1px solid #ccc;
+box-sizing: border-box;
+margin: auto 4px;
+border-radius: 4px;
+margin-bottom: 10px;}
+.checkout-new {width: auto; margin: 0px auto; overflow: hidden; margin-top: 10px; margin-bottom: 50px; font-family: 'Roboto', sans-serif;}
+.thanku-box a:hover {    background: #fff;
+    color: #ec008c;}
+.dashbaord-anchor {margin-right:20px !important;}
+.checkout-billing-info {width:50%; float:left; background: #F1F2F2; padding: 20px; box-sizing: border-box; border: 1px solid #eeeeee; border-radius: 10px;}
+.checkbox-right-option {width: 50%; float: left; padding-left: 40px; box-sizing: border-box}
+.checkout-billing-info h2 {padding-bottom: 20px; color:#414042}
+.purchase-package-title h3 {color: #565656;font-family: 'Roboto', sans-serif !important;
+    font-size: 14px;margin-bottom: 0px;} 
+.checkout-billing-info label input {width: 100%; padding: 10px; box-sizing: border-box; box-sizing: border-box; border-radius: 5px; border:2px solid rgba(0,0,0,.1); margin-top:5px; margin-bottom:15px;}
+.checkout-billing-info label select {width: 100%; padding: 10px; box-sizing: border-box; margin-top:5px; margin-bottom:15px; border-radius: 5px; border:2px solid rgba(0,0,0,.1);}
+.name-field {width: 50%; float: left;}
+.first-child {padding-right: 15px; box-sizing: border-box;}
+.checkout-new label {  display: block;
+    color: #3a3a3a;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 14px; 
+    font-weight: 700;}
+.checkout-new label input[type=checkbox] {width: auto; transform: scale(0.9); vertical-align: sub; margin-right:10px; float:left; margin-bottom:10px; margin-top:2px;}
+.checkout-billing-info label span {font-size: 14px; color:#666666}
+.term-text {font-size: 12px;}
+.billing-form-btn {padding:10px 30px; border-radius: 10px; border:1px solid #ec008c; display: block; margin-top: 10px; background: #fff; font-size: 14px; margin-top:20px;}
+.billing-form-btn:hover {background: #ec008c; color:#fff;}
+.purchase-package-info {width: auto; margin: 0px auto; overflow: hidden;padding-top: 20px; padding-bottom: 20px; border-bottom:2px solid rgba(0,0,0,.1)}
+.purchase-package-img {width: 23%; float: left; padding-right: 20px; box-sizing: border-box}
+.purchase-package-img img {height: 150px;}
+.purchase-package-title {width:77%; float: left;}
+.purchase-package-title .total-amount strong { font-size:36px; font-weight:400;color: #000;font-family: 'Roboto', sans-serif !important;}
+.payment-partner-logo {margin-top: 20px; clear: both; display: inline-block; margin-top: 20px; padding-bottom: 20px; border-bottom:2px solid rgba(0,0,0,.1); width: 100%}
+.secure-payment-section {width: auto; margin: 0px auto; padding: 24px 15px; background: #eeeeee; margin-top: 20px; border-radius: 10px;min-height:300px;}
+.secure-payment-section.new {min-height:30px;}
+.secure-payment-section img {float: left; margin-right: 20px;width: 10%;}
+.secure-payment-section h4 {color: #39b54a;
+     font-family: 'Roboto', sans-serif !important;
+margin-top: 0px;
+margin-bottom: 0px;
+font-size: 16px;
+font-weight: 300;}
+.secure-payment-section h4 span { font-size: 16px;
+    color: #39b54a;
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 700;
+    display: inline-block;}
+.secure-payment-section p {margin-bottom:20px!important; color:#3a3a3a;text-align: center;} 
+.term-text {margin-top:10px; color:darkslategray}
+.col-xs-12.form-group.card.required {
+    background-color: #F1F2F2;
+    border: none;
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: calc(3.25rem + 2px) !important;
+}
+#loader {
+    right: unset;
+    left: 15pc;
+    position: relative;
+}
+/***********************************************************/
+/***************************New Changes*********************/
+/***********************************************************/
+
+
+
+.new-lable-img{width: 33.33%;display: inline-block;float: left;width: 180px;}
+.checkout-back.down {
+    margin-bottom: 40px;
+}
+.checkout-img {
+    max-width: 570px;
+    margin: 0px auto;
+}
+
+.new-lable-img img {
+    margin: 0px auto;
+    display: block;
+}
+.new-lable-img p {
+    text-align: center;
+    margin-top: 5px;
+}
+.new-lable-img p span {
+    margin-left: 5px;
+    color: #a3a3a3;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 16px;
+}
+.arrow {
+    margin-top: 6px;
+}
+.checkout-back{background: linear-gradient(to top, #E4E4E4, #FFF);overflow: auto;padding: 20px;} 
+.checkout-img {}
+/*.checkout-img {
+    background: url('header-bg.jpg')repeat-x;
+}*/
+.checkout-active p {
+    color: #ec018c;
+    font-size: 16px;
+    font-weight: 700;
+}
+.checkout-not-active p {
+    color: #a3a3a3;
+    font-size: 16px;
+    font-weight: 700;
+}
+.arrow-active {
+    float: right;
+    margin-top: 8px;
+    font-size: 14px;
+}
+.arrow-not-active {
+    float: right;
+    margin-top: 8px;
+    font-size: 14px;
+}
+.arrow-not-active .fa{
+    margin-top: 5px;
+    color: #a3a3a3;}
+.thanku-box img {
+    margin-bottom: 30px;
+    width: 25%;
+}
+.purchase-package-title h3 span {   
+    font-weight: 700;
+    color: #565656;font-family: 'Roboto', sans-serif !important;
+}
+.checkout-active p span {
+    color: #ec018c;
+}
+.arrow-active .fa {
+    color: #ec008c;
+} 
+.form-control.coupon-btn{
+    margin-top: 10px;
+    background: #ddd;} 
+.secure-payment-section label {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif !important; 
+}
+.secure-payment-section label a {
+    color: #ec008c;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 14px
+}
+.total-amount span {
+    font-size: 36px;
+    font-weight: 700;
+    color: #000;
+    font-family: 'Roboto', sans-serif !important;
+}
+.user_option {
+    margin-right: 10px;list-style: none;
+}
+.chose_area {
+    border-right: 2px solid rgba(0,0,0,.1);
+}
+.total_area li {
+color: #565656;
+font-weight: 400;
+}
+.total_area li span {
+font-weight: 700;
+color: #565656;
+}
+#grand_tot {
+font-size: 20px;
+}
+#grand_tot span {
+font-size: 20px;
+} 
+.secure-payment-section h5 {
+    display: inline-block;
+    margin-top: 0px;
+    font-size: 30px;
+     font-weight: 300;
+    color: #39b54a;
+     font-family: 'Roboto', sans-serif !important;
+}
+
+.secure-payment-section h5 span {
+    font-size: 30px;
+    font-weight: 700;
+    color: #39b54a;
+    font-family: 'Roboto', sans-serif !important;
+}
+
+
+
+
+
+.form-control.btn.btn-primary.submit-button {
+    width: 45%;
+    float: left;
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.form-control.btn.btn-primary.submit-button {
+    width: 30%;
+    float: left;
+    margin-top: 20px;
+    margin-right: 10px;
+    background-color: #ec008c;
+    color: #000;
+    font-weight: 400;
+}
+
+.form-control.btn.btn-primary.submit-button.new {
+    background: #dfa22d;
+    width: 100%;
+    border: 1px solid #dfa22d;
+     font-family: 'Roboto', sans-serif !important;
+}
+.form-control.btn.btn-primary.submit-button.new img{width: 4%;}
+.form-control.btn.btn-primary.submit-button.pay {
+    color: #fff;
+    font-weight: 400;
+    font-size: 14px;
+    border: 1px solid #ec008c;
+     font-family: 'Roboto', sans-serif !important;
+    border-radius: 4px;
+}
+}
+
+.form-group.pay_with_paypal_btn img {
+    width: 12%;
+    margin-right: 0px;
+}
+
+
+.container {max-width: 1280px!important;    width: 100%;}
+
+
+
+
+/***********************************************************/
+@media (max-width:1250px){
+    .form-control.btn.btn-primary.submit-button.new{width: 48%;}
+}
+@media (max-width:1190px){
+    .form-control.btn.btn-primary.submit-button.new{width: 100%;}
+    .form-control.btn.btn-primary.submit-button.new img {width: 4%;}
+}
+@media (max-width:990px){
+    .purchase-package-img img{width: 100%;height: auto;}
+    .payment-partner-logo img {width: 100%;height: auto; }
+    .chose_area{border: none;}
+}
+@media (max-width:874px){
+.form-control.btn.btn-primary.submit-button.new{width: 100%;} 
+.form-control.btn.btn-primary.submit-button.new img {width: 6%;}
+}
+@media (max-width:768px){
+    .purchase-package-title .total-amount{padding-top: 10px;}
+    .purchase-package-title h3{padding-bottom: 10px;}
+    .checkbox-right-option{padding-left: 30px;}
+    .purchase-package-img img{height: 100%;}
+    .purchase-package-title h3{padding-bottom: 0px;margin-top: 0px; }
+}
+@media (max-width:640px){
+    .form-control.btn.btn-primary.submit-button.new img {width: 4%;} 
+    .thanku-box a{padding: 7px 10px;min-width: 140px;}
+    .checkout-img{display: flex;}
+    .checkout-billing-info{width: 100%;}
+    .checkbox-right-option{width: 100%;}
+    .checkbox-right-option{padding-left: 0px;}
+}
+@media (max-width:540px){
+    .arrow-active {margin-top: 12px;}.arrow-not-active .fa{margin-top: 7px;} 
+    .new-lable-img p span{font-size: 11px;}
+    .new-lable-img img {
+width: 25%;
+}.checkout-active p {font-size: 12px;}.checkout-not-active p {font-size: 12px;}.arrow-active {font-size: 11px;}.arrow-not-active {font-size: 11px;}
+}
+@media (max-width:480px){
+    .form-control.btn.btn-primary.submit-button.new img {
+    width: 5%;}
+    .col-md-12.form-group.pay_with_paypal_btn {
+    margin-left: 0px;
+    }.purchase-progress .wrapper {
+        width: 310px !important; 
+    }.purchase-progress .line-cut {
+        width: 105px !important;
+    }
+}
+@media (max-width:420px){
+    .thanku-box{padding: 35px;} 
+    .form-control.btn.btn-primary.submit-button.new img {
+    width: 6%;}
+}
+@media (max-width:414px){
+    .dashbaord-anchor {
+    margin-right: 0px !important;
+}
+}
+@media (max-width:360px){
+    .form-control.btn.btn-primary.submit-button.new img {
+    width: 7%;}
+}
+@media (max-width:320px){
+    .purchase-progress .wrapper {
+        width: 260px !important;
+    }.purchase-progress .line-cut {
+        width: 82px !important;
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "thewispy-6b883",
+  "private_key_id": "ad4d94865c93f26b42a8c68c14625e8b942615d1",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDGQ4rKfZjSxIba\nNATp3X6SxFAWXdqkBhifRSx9sd8xYoRYvQNCLyngmZ6j7pH79iQDyRJ/YXsqFjRa\ny+eRmA5XYnnfI+cFw51fBgZ0xC8HCNEQhmquVtXrdUHpwua2rZkcS+qY3yY0iQJ9\nrXAnczQEatW+oau7fcXfqy+l92wMyf+J1yJM9t04C5pPAcxnfZdknIWTXkjCAYOg\ntRhrAq1eiCsS+WAl1Cu4Xzjh5zGHbIgkNtRN2/zjDlp8e3UyASP0eN54BmaMuoF6\nKem/++8cEW80PvcXEqDqTnNuX8Zca7hKcn9K/ShZL8Ckit10IDfDCIsbeKZJJAG2\nINpqUkSfAgMBAAECggEANk3gsYbGOZCfuRt/bwj+drezkfTCAqQy0UkSnxj9n5qy\n0lVvE400hLK++3rIXIF2Kt1DpkUuhYAQdgAcnMnPv8qWw/IjAHasX48YbJohoWUe\nUk7m4HqjXDtBQwRhyg5xfgkjKB0S61fNqVu8eOm6iS0z/2Nr1M5lyNYsFmLXIwcj\nfy6IWaRB2bKFZ3LuWEdwJHrF/1jESy2SCMwV/lJrBKIN8dqWU8HbpMr1Y2AE0frZ\ndur5TmYGQ+rTHVpxaqXhhgBBzlhhUgcANGOfQJk2+G/iVEwOKApgHEtziKr+r87w\n0e67qTP7blaZYvCqhxf65xBQzKlEG8cfAoLKrNiiiQKBgQDhrLJCvzihsqzPsYdO\nFkMD6uNOGdyi7TFOSt5djb0/inLohwJuiRf8qo+/WP56OAneAAnU+PO2bQsgR0+8\nyNKE+1OFn+lGevYaLNHsLnlDaV3KWVDKPDdnrbikmzbfVfOgicum22OpBW9a5vLb\n3yBw4dM1oy+gwrjvsaLYfpsY1wKBgQDg5+dkSE13p62R+exqsMiXtlmfYbxo+Kz3\nHVGoz4gVB2M2PYwxv4fGQGiY5ejDYBN1Fb57dw8K6cV9ODx1nblh4tKegoc4jOyn\nM7uOAyOROgYDpf5ZLZf4us/0Sbb4SM+/t+4byVhFUG2e7azryW5jf4zNHdaXT+EU\nZ4pvBqTReQKBgQC/sOWqdKsyDodj1DROS/KYvUhe6vDTJA8hpc7EQMVj18JLaYLT\nSXgqkuaPbpSaVEdtXzL6yIybhHxS6r/8Z8kKVEFZ279WstOg4DlgGQnADRwx6TQK\n1KNrWdDhYUZ25peO4f0uumQpCgjQeiQIR7tSpz+06+xk7YIReB4PL1um+QKBgQC8\nx6tgb5gm0aZNm3yoaU9WmQdNUxp0+hclLYT3r4tIK3VJeAwPTfdHn5Sskn74T9LF\nOsUymVMVE/hjDSsihouu8FdeGa4q949FIZVStKvMIOofcdu3OyAO9a/MG3vrmCJZ\niKfixvTC6am590JogCGaftvO6DbRt4j0OZznaKo78QKBgB0kLTaw/fctj5Dfn2s3\n5pXAwEqATz07BokKQqrXXODL2ulVxKKJ3gqyrUjvZ64tjy08U+yZph/yq+H+0hF+\nPKVx3eBJGzJoRCLOEE1uCOiPYYsBdxw3LIOgrMj/s0yEzP3zGmnb2l/fpTb339gr\n+dt42WNLkfQIhKgErFn8qa3t\n-----END PRIVATE KEY-----\n",
+  "client_email": "laravelwithfcm@thewispy-6b883.iam.gserviceaccount.com",
+  "client_id": "101584024677542659664",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/laravelwithfcm%40thewispy-6b883.iam.gserviceaccount.com"
+}

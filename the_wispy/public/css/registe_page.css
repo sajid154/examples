@@ -1,0 +1,155 @@
+* {padding:0px; margin:0px;}
+#main_wrapper {width:auto; margin:0px auto;}
+
+.dropdown-menu.dropdown-menu-right.show {
+    padding: 10px;
+}.show {
+    padding: 10px;
+}
+.container {margin:0px auto !important; width:100% !important; max-width:1280px !important; box-sizing:border-box;padding:0px !important;}
+.container:after {
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+.logo {float:left;padding: 20px 0px;
+	padding-bottom: 19px;}
+.main-menu{float:right;padding: 10px 0px; }
+#main_header {width:100%;float:left; margin:0px auto; border-bottom:5px solid #6D6E71;}
+.main-menu li{float:left; margin-right:30px !important; margin-top:20px; list-style-type:none}
+.main-menu li a{color:#58595B !important; font-size:16px !important; font-weight:400 !important;}
+.main-menu li a:hover {}
+.main-menu li:last-child a:hover {
+    color: #fff !important;
+}
+.main-menu li:last-child a:hover{ background: #fff !important;
+color: #ec008c !important;}
+
+.main-menu li:last-child a {margin-right: 0px !important;
+	padding:15px 30px !important;
+	background: #ec008c !important;
+	margin-top: 0px !important;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2) !important;
+	border: 1px solid #ec008c !important;
+	border-radius: 10px !important;}
+/* .main-menu li:last-child {margin-right:0px !important; padding:15px 30px !important; background:yellow !important; margin-top:0px !important; box-shadow:0 4px 8px 0 rgba(0,0,0,0.2) !important; margin-right:10px !important;} */
+ .main-menu li:last-child a {color:#fff !important;}
+html, body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, p, blockquote, fieldset, input, hr ,figure,marquee,img { margin:0; padding:0;  }
+fieldset {border:0}
+a {text-decoration:none;}
+a img{border:none;}
+body{font-family: 'Roboto', sans-serif !important; overflow-x:hidden;}
+
+#register-form {width: auto; margin:0px auto; max-width:600px; margin-top:60px; margin-bottom:60px;}
+.login-anchor {margin-bottom:20px !important;}
+.register-logo {text-align:center; margin-bottom:30px;}
+.register-logo p {margin-top:20px;}
+.register-form input[type=text]{width:100%; padding:10px; box-sizing:border-box; margin-bottom:10px; border:2px solid #BCBEC0; border-radius:10px}
+.register-form input[type=email]{width:100%; padding:10px; box-sizing:border-box; margin-bottom:10px; border-radius:10px; border:2px solid #BCBEC0; border-radius:10px}
+.register-form input[type=password]{width:100%; padding:10px; box-sizing:border-box; margin-bottom:10px; border-radius:10px; border:2px solid #BCBEC0; border-radius:10px}
+.col-md-6.accpet-terms input[type=checkbox]{margin-right:10px;}
+.col-md-6.accpet-terms p {font-size:14px; color:#6D6E71}
+.register-btn {text-align:center;}
+.register-btn p {margin-top:20px;}
+/* .register-btn button {color: #414042; padding: 15px 60px; border-radius: 10px; background: yellow; font-size: 14px; font-weight: 500; display: inline-block; margin-right: 20px; border: 1px solid yellow; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); margin-bottom:10px; margin-top:20px;} */
+.register-btn button {display: inline-block;
+	background: #EC008C;
+	border-radius: 10px;
+	color: #fff;
+	font-size: 16px;
+	margin-right: 20px;
+	display: inline-block;
+	border: 1px solid #ec008c;padding: 15px 60px;}
+
+/***********************Demo button**************************/
+
+/***********************Demo button**************************/
+.demo{
+  /*position: fixed;
+  top: 50%;
+  left: 50%;*/
+/*  transform: translate(-50%, -50%);*/
+}
+.demo a{
+ /* display: block;
+  width: 100px;
+  height: 45px;*/
+  line-height: 43px;
+  font-size: 18px;
+  font-family: sans-serif;
+  text-decoration: none;
+  color: #ec008c!important;
+  border: 2px solid #ec008c;
+  letter-spacing: 2px;
+  text-align: center;
+  position: relative;
+  transition: all .35s;
+  border-radius: 10px;padding: 15px;
+}
+.demo a span{
+  position: relative;
+  z-index: 2;
+}
+.demo a:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #ec008c;
+  transition: all .35s;border-radius: 5px;
+}
+.demo a:hover{
+  color: #fff!important;
+}
+.demo a:hover:after{
+  width: 100%;
+}
+.nav-item.d-button .demo a {}
+.nav-item.d-button {
+    /*color: #ec008c !important;*/
+    margin-top: 5px;
+}
+.btn.btn-primary.login-anchor:hover {
+    background: #fff;
+    color: #EC008C;
+}
+/***********************************************************/
+/* =================================================================== */
+/* ========== Responsive ========== */
+/* =================================================================== */
+@media screen and (max-width : 1200px) {
+	.container {padding:0px 10px !important;}
+}
+@media screen and (max-width : 640px) {
+.btn.btn-primary.login-anchor {
+    margin-top: 20px;
+}
+.register-btn button{margin-right: 0px;}
+}
+@media screen and (max-width : 600px) {
+	.logo{width: 100%;text-align: center;float: none;padding-bottom: 0px;}
+	.main-menu {float: none;text-align: center;padding-bottom: 25px;}
+	.main-menu li {float: none;display: inline-block;}
+	.main-menu li:last-child a{padding: 15px!important;}
+	#register-form{margin-top: 30px;}
+	.main-menu li:last-child {margin-right: 0px !important;}
+}
+@media screen and (max-width : 540px) {
+	.checkout-product-heading p {font-size:12px !important;}
+	.column-1 {width:20% !important;}
+	.column-2 {width:20% !important;}
+}
+@media screen and (max-width : 460px) {
+	.logo {float:none; width:100%; text-align:center;}
+	.main-menu {float:none; width:100%; text-align:center;}
+	.main-menu li {float:none; display:inline-block;}
+	.logo{padding: 15px 0px;}
+	.main-menu{padding-bottom: 30px!important;padding-top: 0px;}
+}
+@media screen and (max-width : 400px){.main-menu li{margin-right: 20px!important;}}
+@media screen and (max-width : 350px){.main-menu li{margin-right: 10px!important;}}
+@media screen and (max-width : 330px){
+}

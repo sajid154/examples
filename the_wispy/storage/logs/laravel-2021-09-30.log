@@ -1,0 +1,260 @@
+[2021-09-30 09:21:32] local.ERROR: syntax error, unexpected 'foreach' (T_FOREACH), expecting ')' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected 'foreach' (T_FOREACH), expecting ')' at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:49)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 09:21:46] local.ERROR: syntax error, unexpected ';', expecting ')' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected ';', expecting ')' at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:47)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 09:22:01] local.ERROR: Call to undefined function App\Console\Commands\select() {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to undefined function App\\Console\\Commands\\select() at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:47)
+[stacktrace]
+#0 [internal function]: App\\Console\\Commands\\NotifyUserAboutPlanExpiry->handle()
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#4 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#7 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#8 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\NotifyUserAboutPlanExpiry), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#10 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#11 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 {main}
+"} 
+[2021-09-30 09:23:20] local.ERROR: syntax error, unexpected end of file, expecting function (T_FUNCTION) or const (T_CONST) {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected end of file, expecting function (T_FUNCTION) or const (T_CONST) at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:70)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 09:25:44] local.ERROR: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:53)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 09:32:19] local.ERROR: Method diffInHumen does not exist. {"exception":"[object] (Carbon\\Exceptions\\UnknownMethodException(code: 0): Method diffInHumen does not exist. at C:\\xampp\\htdocs\\the_wispy\\vendor\
+esbot\\carbon\\src\\Carbon\\Traits\\Date.php:2604)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\
+esbot\\carbon\\src\\Carbon\\Traits\\Mixin.php(153): Carbon\\Carbon->Carbon\\Traits\\{closure}()
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\
+esbot\\carbon\\src\\Carbon\\Traits\\Date.php(2611): Carbon\\Carbon::bindMacroContext(Object(Illuminate\\Support\\Carbon), Object(Closure))
+#2 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php(53): Carbon\\Carbon->__call('diffInHumen', Array)
+#3 [internal function]: App\\Console\\Commands\\NotifyUserAboutPlanExpiry->handle()
+#4 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#7 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#8 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#9 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#10 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#11 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#12 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\NotifyUserAboutPlanExpiry), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#13 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#14 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#16 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#17 {main}
+"} 
+[2021-09-30 09:32:59] local.ERROR: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:53)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 09:33:55] local.ERROR: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:53)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 09:35:44] local.ERROR: syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' {"exception":"[object] (Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): syntax error, unexpected '->' (T_OBJECT_OPERATOR), expecting identifier (T_STRING) or variable (T_VARIABLE) or '{' or '$' at C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php:53)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\composer\\ClassLoader.php(346): Composer\\Autoload\\includeFile('C:\\\\xampp\\\\htdocs...')
+#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Console\\\\Com...')
+#2 [internal function]: spl_autoload_call('App\\\\Console\\\\Com...')
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(241): is_subclass_of('App\\\\Console\\\\Com...', 'Illuminate\\\\Cons...')
+#4 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Kernel.php(40): Illuminate\\Foundation\\Console\\Kernel->load(Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(328): App\\Console\\Kernel->commands()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(131): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#7 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#8 {main}
+"} 
+[2021-09-30 10:52:34] local.ERROR: Connection to tcp://smtp.sendgrid.net:587 Timed Out {"exception":"[object] (Swift_TransportException(code: 0): Connection to tcp://smtp.sendgrid.net:587 Timed Out at C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\AbstractSmtpTransport.php:476, Swift_IoException(code: 0): Connection to tcp://smtp.sendgrid.net:587 Timed Out at C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\StreamBuffer.php:166)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\AbstractSmtpTransport.php(343): Swift_Transport_AbstractSmtpTransport->getFullResponse(23)
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\EsmtpTransport.php(305): Swift_Transport_AbstractSmtpTransport->executeCommand('\\
+.\\
+', Array, Array, false, NULL)
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\AbstractSmtpTransport.php(407): Swift_Transport_EsmtpTransport->executeCommand('\\
+.\\
+', Array)
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\AbstractSmtpTransport.php(503): Swift_Transport_AbstractSmtpTransport->streamMessage(Object(Swift_Message))
+#4 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\AbstractSmtpTransport.php(519): Swift_Transport_AbstractSmtpTransport->doMailTransaction(Object(Swift_Message), 'imransaeed@solu...', Array, Array)
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Transport\\AbstractSmtpTransport.php(206): Swift_Transport_AbstractSmtpTransport->sendTo(Object(Swift_Message), 'imransaeed@solu...', Array, Array)
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\swiftmailer\\swiftmailer\\lib\\classes\\Swift\\Mailer.php(71): Swift_Transport_AbstractSmtpTransport->send(Object(Swift_Message), Array)
+#7 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(484): Swift_Mailer->send(Object(Swift_Message), Array)
+#8 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(259): Illuminate\\Mail\\Mailer->sendSwiftMessage(Object(Swift_Message))
+#9 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailable.php(159): Illuminate\\Mail\\Mailer->send('emails.expiry_n...', Array, Object(Closure))
+#10 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\Localizable.php(19): Illuminate\\Mail\\Mailable->Illuminate\\Mail\\{closure}()
+#11 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailable.php(160): Illuminate\\Mail\\Mailable->withLocale(NULL, Object(Closure))
+#12 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(275): Illuminate\\Mail\\Mailable->send(Object(Illuminate\\Mail\\Mailer))
+#13 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(229): Illuminate\\Mail\\Mailer->sendMailable(Object(App\\Mail\\NotifyUserAboutExpiry))
+#14 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\PendingMail.php(127): Illuminate\\Mail\\Mailer->send(Object(App\\Mail\\NotifyUserAboutExpiry))
+#15 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php(61): Illuminate\\Mail\\PendingMail->send(Object(App\\Mail\\NotifyUserAboutExpiry))
+#16 [internal function]: App\\Console\\Commands\\NotifyUserAboutPlanExpiry->handle()
+#17 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#18 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#19 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#20 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#21 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#22 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#23 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#24 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\NotifyUserAboutPlanExpiry), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#30 {main}
+"} 
+[2021-09-30 11:12:53] local.ERROR: Call to a member function addWeek() on string (View: C:\xampp\htdocs\the_wispy\resources\views\emails\expiry_notify.blade.php) {"exception":"[object] (ErrorException(code: 0): Call to a member function addWeek() on string (View: C:\\xampp\\htdocs\\the_wispy\esources\\views\\emails\\expiry_notify.blade.php) at C:\\xampp\\htdocs\\the_wispy\\storage\\framework\\views\\62d27da176937f414b07ed23bd91c6d5f4c88c9f.php:141, Symfony\\Component\\Debug\\Exception\\FatalThrowableError(code: 0): Call to a member function addWeek() on string at C:\\xampp\\htdocs\\the_wispy\\storage\\framework\\views\\62d27da176937f414b07ed23bd91c6d5f4c88c9f.php:141)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(47): Illuminate\\View\\Engines\\CompilerEngine->handleViewException(Object(Symfony\\Component\\Debug\\Exception\\FatalThrowableError), 0)
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(59): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(142): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(125): Illuminate\\View\\View->getContents()
+#4 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(90): Illuminate\\View\\View->renderContents()
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(353): Illuminate\\View\\View->render()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(326): Illuminate\\Mail\\Mailer->renderView('emails.expiry_n...', Array)
+#7 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(244): Illuminate\\Mail\\Mailer->addContent(Object(Illuminate\\Mail\\Message), 'emails.expiry_n...', NULL, NULL, Array)
+#8 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailable.php(159): Illuminate\\Mail\\Mailer->send('emails.expiry_n...', Array, Object(Closure))
+#9 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\Localizable.php(19): Illuminate\\Mail\\Mailable->Illuminate\\Mail\\{closure}()
+#10 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailable.php(160): Illuminate\\Mail\\Mailable->withLocale(NULL, Object(Closure))
+#11 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(275): Illuminate\\Mail\\Mailable->send(Object(Illuminate\\Mail\\Mailer))
+#12 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(229): Illuminate\\Mail\\Mailer->sendMailable(Object(App\\Mail\\NotifyUserAboutExpiry))
+#13 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\PendingMail.php(127): Illuminate\\Mail\\Mailer->send(Object(App\\Mail\\NotifyUserAboutExpiry))
+#14 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php(61): Illuminate\\Mail\\PendingMail->send(Object(App\\Mail\\NotifyUserAboutExpiry))
+#15 [internal function]: App\\Console\\Commands\\NotifyUserAboutPlanExpiry->handle()
+#16 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#17 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#19 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#20 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#21 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#22 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#23 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\NotifyUserAboutPlanExpiry), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 {main}
+"} 
+[2021-09-30 11:14:21] local.ERROR: Undefined variable: start_date (View: C:\xampp\htdocs\the_wispy\resources\views\emails\expiry_notify.blade.php) {"exception":"[object] (ErrorException(code: 0): Undefined variable: start_date (View: C:\\xampp\\htdocs\\the_wispy\esources\\views\\emails\\expiry_notify.blade.php) at C:\\xampp\\htdocs\\the_wispy\\storage\\framework\\views\\62d27da176937f414b07ed23bd91c6d5f4c88c9f.php:141, ErrorException(code: 0): Undefined variable: start_date at C:\\xampp\\htdocs\\the_wispy\\storage\\framework\\views\\62d27da176937f414b07ed23bd91c6d5f4c88c9f.php:141)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\PhpEngine.php(45): Illuminate\\View\\Engines\\CompilerEngine->handleViewException(Object(ErrorException), 0)
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Engines\\CompilerEngine.php(59): Illuminate\\View\\Engines\\PhpEngine->evaluatePath('C:\\\\xampp\\\\htdocs...', Array)
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(142): Illuminate\\View\\Engines\\CompilerEngine->get('C:\\\\xampp\\\\htdocs...', Array)
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(125): Illuminate\\View\\View->getContents()
+#4 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php(90): Illuminate\\View\\View->renderContents()
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(353): Illuminate\\View\\View->render()
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(326): Illuminate\\Mail\\Mailer->renderView('emails.expiry_n...', Array)
+#7 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(244): Illuminate\\Mail\\Mailer->addContent(Object(Illuminate\\Mail\\Message), 'emails.expiry_n...', NULL, NULL, Array)
+#8 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailable.php(159): Illuminate\\Mail\\Mailer->send('emails.expiry_n...', Array, Object(Closure))
+#9 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Traits\\Localizable.php(19): Illuminate\\Mail\\Mailable->Illuminate\\Mail\\{closure}()
+#10 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailable.php(160): Illuminate\\Mail\\Mailable->withLocale(NULL, Object(Closure))
+#11 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(275): Illuminate\\Mail\\Mailable->send(Object(Illuminate\\Mail\\Mailer))
+#12 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\Mailer.php(229): Illuminate\\Mail\\Mailer->sendMailable(Object(App\\Mail\\NotifyUserAboutExpiry))
+#13 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Mail\\PendingMail.php(127): Illuminate\\Mail\\Mailer->send(Object(App\\Mail\\NotifyUserAboutExpiry))
+#14 C:\\xampp\\htdocs\\the_wispy\\app\\Console\\Commands\\NotifyUserAboutPlanExpiry.php(61): Illuminate\\Mail\\PendingMail->send(Object(App\\Mail\\NotifyUserAboutExpiry))
+#15 [internal function]: App\\Console\\Commands\\NotifyUserAboutPlanExpiry->handle()
+#16 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(32): call_user_func_array(Array, Array)
+#17 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(90): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#18 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php(34): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#19 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(576): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#20 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(183): Illuminate\\Container\\Container->call(Array)
+#21 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Command\\Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#22 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#23 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(1009): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(273): Symfony\\Component\\Console\\Application->doRunCommand(Object(App\\Console\\Commands\\NotifyUserAboutPlanExpiry), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#27 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#28 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#29 {main}
+"} 
+[2021-09-30 13:19:39] local.ERROR: Class App\Console\Commands\NotifyUserAboutPlanExpiry::class does not exist {"exception":"[object] (ReflectionException(code: -1): Class App\\Console\\Commands\\NotifyUserAboutPlanExpiry::class does not exist at C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php:788)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(788): ReflectionClass->__construct('App\\\\Console\\\\Com...')
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(667): Illuminate\\Container\\Container->build('App\\\\Console\\\\Com...')
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php(615): Illuminate\\Container\\Container->resolve('App\\\\Console\\\\Com...', Array)
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(767): Illuminate\\Container\\Container->make('App\\\\Console\\\\Com...', Array)
+#4 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(258): Illuminate\\Foundation\\Application->make('App\\\\Console\\\\Com...')
+#5 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(272): Illuminate\\Console\\Application->resolve('App\\\\Console\\\\Com...')
+#6 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(343): Illuminate\\Console\\Application->resolveCommands(Array)
+#7 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Foundation\\Console\\Kernel->getArtisan()
+#8 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#9 {main}
+"} 
+[2021-09-30 13:22:45] local.ERROR: Command "schedule:work" is not defined.
+
+Did you mean one of these?
+    queue:work
+    schedule:run {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"schedule:work\" is not defined.
+
+Did you mean one of these?
+    queue:work
+    schedule:run at C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php:676)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(237): Symfony\\Component\\Console\\Application->find('schedule:work')
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 

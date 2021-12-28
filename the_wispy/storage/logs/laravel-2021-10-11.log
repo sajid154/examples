@@ -1,0 +1,46 @@
+[2021-10-11 10:35:39] local.ERROR: Command "schedule:list" is not defined.
+
+Did you mean one of these?
+    event:list
+    make:listener
+    queue:listen
+    route:list
+    schedule:run {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"schedule:list\" is not defined.
+
+Did you mean one of these?
+    event:list
+    make:listener
+    queue:listen
+    route:list
+    schedule:run at C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php:676)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(237): Symfony\\Component\\Console\\Application->find('schedule:list')
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 
+[2021-10-11 10:35:44] local.ERROR: Command "schedule:list" is not defined.
+
+Did you mean one of these?
+    event:list
+    make:listener
+    queue:listen
+    route:list
+    schedule:run {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"schedule:list\" is not defined.
+
+Did you mean one of these?
+    event:list
+    make:listener
+    queue:listen
+    route:list
+    schedule:run at C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php:676)
+[stacktrace]
+#0 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(237): Symfony\\Component\\Console\\Application->find('schedule:list')
+#1 C:\\xampp\\htdocs\\the_wispy\\vendor\\symfony\\console\\Application.php(149): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(90): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\xampp\\htdocs\\the_wispy\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(133): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\xampp\\htdocs\\the_wispy\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 {main}
+"} 

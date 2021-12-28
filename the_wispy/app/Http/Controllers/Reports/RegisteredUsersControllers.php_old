@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Http\Controllers\Reports;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\User;
+use App\Payment;
+use DataTables;
+class RegisteredUsersControllers extends Controller
+{
+   
+   public function index()
+    {   
+        $postsQuery = User::all();
+		//$posts = $postsQuery->select('*');
+        $user_paid = Payment::select('user_id as user')->where('payment_id', 'free')->get();
+		return view('superadmin.reports.registered_users', compact('user_paid','postsQuery'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function default(Request $request)
+    {
+		
+		$postsQuery = User::query();
+		$paid_user = (!empty($_GET["paid_user"])) ? ($_GET["paid_user"]) : ('');
+		if($paid_user == 'paid')
+		{
+			//$user_method = "free";
+			$user_paid = Payment::select('user_id as user')->where('payment_id', 'free')->get();
+			
+			foreach ($user_paid as $paid_user_id){
+				$user_payment = User::where('id', $paid_user_id->user)->get();
+				}
+				if (request()->ajax()){
+        return Datatables::of($user_payment)
+            ->make(true);
+		}}
+		$posts = $postsQuery->select('*');
+        return datatables()->of($posts)
+            ->make(true);       
+    }
+}

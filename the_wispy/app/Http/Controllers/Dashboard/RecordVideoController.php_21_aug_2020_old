@@ -1,0 +1,160 @@
+<?php
+
+namespace App\Http\Controllers\dashboard;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\CallLog;
+use DataTables;
+use App\CaptureScreenshot;
+
+use LaravelFCM\Message\OptionsBuilder;
+use LaravelFCM\Message\PayloadDataBuilder;
+use LaravelFCM\Message\PayloadNotificationBuilder;
+use FCM;
+
+class RecordVideoController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request, $id)
+    {   
+        // return "$id";
+        $clientlist = \App\ClientList::find($id);
+        // $request->session()->flash('device', $clientlist->id);
+        // $session = session()->get('device');
+        // $clientlists = CaptureScreenshot::where('device_id', $session)->get();
+         $device_id = $clientlist->id; 
+        $plan_id = \App\ClientList::select('plan_id','plan_id as plan')->where('id', $id)->first();
+        $user_id = \App\ClientList::select('user_id','user_id as user')->where('id', $id)->first();
+        return view ('user.record_video',compact('device_id','plan_id','id','user_id'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function default(Request $request)
+    {
+        // $clientlist = \App\ClientList::find($request->log_value);
+        // $request->session()->flash('device', $clientlist->id);
+        // $session = session()->get('device');
+        $data = CaptureScreenshot::where('device_id', $request->device_id)->get();
+
+        if ($request->ajax()) {
+
+            return Datatables::of($data)
+            ->editColumn('date_time', function ($data) {
+            return date('g:i:s A', strtotime($data->date_time));
+            })
+            ->addColumn('intro', function ($data) {
+                return date('M,d Y', strtotime($data->date_time));
+            })
+                    ->make(true);
+        }
+      
+        return view('users');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function run_command(Request $request){
+        // echo "Dfd";
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60*20);
+
+        $notificationBuilder = new PayloadNotificationBuilder();
+        // $notificationBuilder->setBody('Hello world')
+                            // ->setSound('default');
+
+        $dataBuilder = new PayloadDataBuilder();
+        $dataBuilder->addData(['my_custom_key' => 'record_video']);
+
+
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+
+        // dump($token);
+        // dump($option);
+        // dump($notification);
+        // dd($data);exit();
+        $token = "ebSk1_X8SQCnLfqaBpoK6V:APA91bGUyrIU5T3x74TxqX5D1ttJYGNYviT7Kh_jqz7uPCfgihiK_eum9FcrTqZZ6cD8_2P5m-7YbZ9zlJvNqgHAJqYatDCeqVcwddGWAdCHSyCPpQnPNt9OUDZwky0N3zL4pYD3C8e_";
+
+        $downstreamResponse = FCM::sendTo($token, $option, $notification, $data);
+//         dd(response()->json($downstreamResponse, 200));
+// // return response()->json(200, 'Sent', $downstreamResponse);
+//            return response()->json( [
+//                   'response' => $downstreamResponse
+//                ] );
+        // $downstreamResponse->SuccessCount();
+        $downstreamResponse->numberFailure();
+        $downstreamResponse->numberModification();
+
+        // return Array - you must remove all this tokens in your database
+        $downstreamResponse->tokensToDelete();
+
+        // return Array (key : oldToken, value : new token - you must change the token in your database)
+        $downstreamResponse->tokensToModify();
+
+        // return Array - you should try to resend the message to the tokens in the array
+        $downstreamResponse->tokensToRetry();
+
+        // return Array (key:token, value:error) - in production you should remove from your database the tokens
+        $downstreamResponse->tokensWithError();
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}

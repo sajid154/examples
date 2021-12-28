@@ -1,0 +1,153 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\ClientList;
+use App\PlanFeatures;
+use App\DeviceSlots;
+use App\DevicesFeatures;
+use DB;
+use Auth;
+class DeviceSettingController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($id)
+    {
+        $client_data =  ClientList::Join('plans','plans.id','clientlist.plan_id')->where('clientlist.id', $id)->first();
+        $assigned_features = PlanFeatures::with('features')
+        ->where('plans_id', $client_data->plan_id)
+        ->get();
+        $selected_features = DevicesFeatures::where('uniqueid',$id)->get();
+// echo "string";
+        // dd($client_data);
+       return view('user.user_devices',compact('id','assigned_features','selected_features','client_data'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $id = $request->device_id;
+        $features = $request->feature_id;
+        DB::enableQueryLOg();
+        $plans =  ClientList::Join('plans','plans.id','clientlist.plan_id')
+        ->join('plans_features','plans_features.plans_id','plans.id')
+        ->where('clientlist.id', $id)->get();
+
+
+       // dump($plans);
+       //  dd($features);
+
+        
+        // dd(DB::getQueryLog());
+
+        // $plans = DB::table('plans_features')->where('plans_id', $client_data->plan_id)->get();
+ DevicesFeatures::where('uniqueid',$id)->delete();
+        if(!empty($plans)){
+        if(!empty($features)){
+
+        
+
+            foreach ($plans as $plan) 
+            {
+        if (in_array($plan->feature_id, $features)) {
+                DevicesFeatures::create([ 
+                 'user_id' => Auth::user()->id,
+                    'uniqueid'=> $id,
+                    'plan_id' => $plan->plans_id,
+                    'features_id' => $plan->feature_id
+             ]);
+         }
+            }
+        }
+    }
+        return redirect()->back();
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+    public function unsubscribe(Request $request)
+    {
+
+        // dump($request->all());
+        $id = $request->id;
+         // return $id;
+        if($request->subscription_type == '1'){
+            $subscription_type='0';
+        }else{
+            $subscription_type='1';
+        }
+        // return $subscription_type;
+        // $subscription_type = $request->subscription_type;
+    ClientList::where('id',$id)->update(['subscribed' => $subscription_type]);
+    DeviceSlots::where('payment_id',0)->where('device_id_d', $id)->delete();
+
+     // $response = [
+     //    'success' => true,
+     //    'message' => "You are Successfully Subscribed!",
+     //    ];
+     //    return response()->json($response, 200);
+        return $subscription_type;
+    }
+}

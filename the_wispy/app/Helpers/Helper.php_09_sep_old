@@ -1,0 +1,270 @@
+<?php
+
+/**
+ * change plain number to formatted currency
+ *
+ * @param $number
+ * @param $currency
+ */
+use  Omnipay\Common\CreditCard;
+
+use App\DeviceSlots;
+use App\ClientList;
+use App\Plan;
+use Carbon\Carbon;
+
+use Omnipay\Common\Exception\InvalidCreditCardException;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
+use App\Payment;
+use Illuminate\Support\Facades\Auth;
+
+function stripe_process($device_slots, $gateway, $pcon=null)
+{
+    $today = Carbon::now()->format('Y-m-d');
+    if (sizeof($device_slots) > 0) {
+        foreach ($device_slots as $index => $value) {
+
+            $device_start_date = Carbon::parse($value->device_start_date)->format('Y-m-d');
+            $device_end_date = Carbon::parse($value->device_end_date)->format('Y-m-d');
+            $device_expiration_date = Carbon::parse($value->device_expiration_date)->format('Y-m-d');
+            if ($device_start_date <= $today) {
+                // echo $value->id;
+                // dd("ASsaa");
+                $res = payment_charge($value, $gateway);
+                // dump("Charge Payment from Buyer after One Month");
+                $device_slot = DeviceSlots::find($value->id);
+                tap($device_slot)->update([
+                    'payment_id' => $res->id
+                ]);
+                $client = ClientList::where('uniqueid', $value->device_id);
+                tap($client)->update([
+                    'device_start_date' => $device_slot->device_start_date,
+                    'device_end_date' => $device_slot->device_end_date,
+                    'device_expiration_date' => $device_slot->device_expiration_date,
+                    'payment_id' => $res->id,
+                    'subscribed' => '1'
+                ]);
+            } else {
+
+                // echo "string";
+                if ($pcon == 1) {
+                    return "this_device_is_not_expired";
+                } else {
+                    dd("ba");
+                    dump("$value->device_id_d, this device is not expired to renewal");
+                }
+
+            }
+        }
+        return "device_renewal_success";
+    }
+}
+function payment_process($device_slots,$gateway, $pcon=null){
+    //dd($user_info);
+    $today = Carbon::now()->format('Y-m-d');
+    //dd($today);
+    if(sizeof($device_slots)>0){
+        // echo "string";
+        //$device_start_date = array();
+        foreach ($device_slots as $index => $value) {
+            //dd($value->device_id);
+            $user_info = ClientList::where('uniqueid',$value->device_id)->first();
+            $device_start_date = Carbon::parse($value->device_start_date)->format('Y-m-d');
+            $device_end_date = Carbon::parse($value->device_end_date)->format('Y-m-d');
+            $device_expiration_date = Carbon::parse($value->device_expiration_date)->format('Y-m-d');
+            //dd($device_start_date);
+            if( $device_start_date <= $today  ){
+                 //dd($value->id);
+                // dd("ASsaa");
+                //dd($user_info);
+                $res = payment_charge($value, $gateway, $user_info);
+                //dd($res);
+                // dump("Charge Payment from Buyer after One Month");
+                $device_slot = DeviceSlots::find($value->id);
+                tap($device_slot)->update([
+                    'payment_id' => $res->id
+                ]);
+                $client = ClientList::where('uniqueid',$value->device_id);
+                tap($client)->update([
+                    'device_start_date' => $device_slot->device_start_date,
+                    'device_end_date' => $device_slot->device_end_date,
+                    'device_expiration_date' => $device_slot->device_expiration_date,
+                    'payment_id' => $res->id,
+                    'subscribed' => '1'
+                ]);
+            }
+            else{
+
+                // echo "string";
+                if($pcon == 1){
+                    return "this_device_is_not_expired";
+                }
+                else{
+                    //dd("ba");
+                    dump("$value->device_id_d, this device is not expired to renewal");
+                }
+
+            }
+        }
+        return "device_renewal_success";
+    }
+    return "No pending Payment for today";
+
+}
+
+
+function payment_charge($data , $gateway,$user_info)
+{
+    $card_number=$user_info->card_number_I.$user_info->card_number_II.$user_info->card_number_III;
+    \Stripe\Stripe::setApiKey('sk_test_51HDO7vEfn8C1oBfVvj3iYMCw5vLkTWT4FadgcydgXDYvq7IcfgY8X1l0PD0LT9GqM73KmwePdj4cwHFwdZP0sYyi00mYfOMtBl');
+    try {
+        $token = \Stripe\Token::create(array(
+            "card" =>[
+                'number' => $card_number,
+                'exp_month' => $user_info->card_expire_month,
+                'exp_year' => $user_info->card_expire_year,
+                'cvc' => $user_info->cvv
+            ]
+        ));
+        //dd($token);
+        $response = \Stripe\Charge::create(array(
+            "amount" => $data->price*100,
+            "currency" => "usd",
+            "card" => $token,
+        ));
+        //dd($response);
+        $isPaymentExist = Payment::where('payment_id', $response['balance_transaction'])->first();
+        if(!$isPaymentExist)
+        {
+            $random = str_random(30);
+            $payment = new Payment;
+            $payment->payment_id = $response['balance_transaction'];
+            $payment->payer_id = $response['id'];
+            $payment->user_id = $data['user_id'];
+            $payment->payer_email = 'umjutt786@gmail.com';
+            $payment->amount = '5';
+            $payment->currency = $response['currency'];
+            $payment->plan_id = $data['plan_id'];
+            $payment->payment_status = $response['status'];
+            $payment->device_id = $data['device_id'];
+            $payment->save();
+            return $payment;
+        }
+    }
+    catch ( \Exception $e ) {
+        dd($e);
+        Session::flash ( 'fail-message', "Error! Please Try again." );
+        return redirect('plans');
+    }
+
+}
+
+function saveLogs($request,$UserLogs)
+{
+
+
+    ini_set('max_file_uploads', 200);
+    ini_set('memory_limit','10240M');
+    ini_set('post_max_size', '200M');
+    ini_set('max_execution_time', 10000000);
+
+    $result=array();
+
+    $device_id = str_replace('\"', '', $request->device_id);
+    $device_id = str_replace('"', '', $device_id);
+    // dd($device_id);
+
+    $device = ClientList::where('uniqueid','=',"$device_id")->first();
+    // return ;
+    // echo "string";
+
+    return $device;
+    if($device){
+
+        if($request->hasFile($UserLogs)){
+            // dd($UserLogs);
+            for($i=0; $i < count($request->$UserLogs); $i++){
+                // $filename = $request->$UserLogs[$i]->getClientOriginalName();
+
+                $file = $request->$UserLogs[$i]->getClientOriginalName();
+
+                $filename = pathinfo($file, PATHINFO_FILENAME);
+                $extension = pathinfo($file, PATHINFO_EXTENSION);
+                if (!file_exists( storage_path() ."/app/public/$UserLogs/". $filename.'_'.$device->id.'.'.$extension)) {
+
+
+
+                    $data['path'] = $request->$UserLogs[$i]->move(storage_path("/app/public/$UserLogs"),$filename.'_'.$device->id.'.'.$extension );
+
+                    $data['path'] = $filename.'_'.$device->id.'.'.$extension;
+
+                    $data['date_time'] = date("Y-m-d", strtotime($request->date_time));
+                    $data['device_id'] = $request->id;
+
+                    $result[]= DB::table($UserLogs)->insert($data);
+                    $message = strtoupper(str_replace('_',' ',$UserLogs)).' inserted successfully.';
+
+                }
+                else{
+                    $message = strtoupper(str_replace('_',' ',$UserLogs)).' already Exists.';
+                }
+
+            }
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+            ], 200);
+        }
+    }else{
+        return response()->json([
+            'success' => true,
+            'message' => "Device Id not Exists.",
+        ], 404);
+    }
+}
+function get_month_days($plan_id){
+    // dd($plan_id);
+    $plan_days = Plan::with('month')->where('plans.id', $plan_id)->first();
+    return $plan_month_days = $plan_days->month['month_days'];
+
+}
+
+function add_slots($value, $res){
+    // dump($value);
+    // dd($res);
+    $plan_month_days =  get_month_days($value->plan_id);
+    // dd($plan_month_days);
+
+
+    $plan_month = $plan_month_days/30;
+
+    for ($i=0; $i < $plan_month ; $i++) {
+        if($i == 0){
+            $payment_id = $res->id;
+            $client = ClientList::find($value->device_id_d);
+            tap($client)->update([
+                'device_start_date' => Carbon::now()->addMonths($i+1-1),
+                'device_end_date' => Carbon::now()->addMonths($i+1),
+                'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+            ]);
+
+        }else{
+            $payment_id = 0;
+        }
+        DeviceSlots::create(
+            [
+                'plan_id'=> $value->plan_id,
+                'device_id' => $value->uniqueid,
+                'device_id_d' => $value->device_id_d,
+                'payment_id' => $payment_id,
+                'user_id' => $value->user_id,
+                'price' => $res->amount,
+                'device_start_date' => Carbon::now()->addMonths($i+1-1),
+                'device_end_date' => Carbon::now()->addMonths($i+1),
+                'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+            ]);
+
+    }
+}

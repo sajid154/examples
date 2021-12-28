@@ -1,0 +1,872 @@
+<?php
+
+namespace App\Http\Controllers;
+use Omnipay\Common\CreditCard;
+use Omnipay\Common\GatewayFactory;
+use Omnipay\Omnipay;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMail;
+use App\Payment;
+use App\ClientList;
+use App\DeviceSlots;
+use App\ClientListPlans;
+use App\Plan;
+use Carbon\Carbon;
+use DB;
+use DateTime;
+use DateTimeZone;
+use Omnipay\Common\Exception\InvalidCreditCardException;
+use Symfony\Component\HttpFoundation\ParameterBag;
+
+use Illuminate\Support\Facades\Auth;
+class PaymentController extends Controller
+{
+    //
+
+    public $gateway;
+
+    public function __construct()
+    {
+        $this->gateway = Omnipay::create('PayPal_Express');
+        /*  $this->gateway->setClientId(env('PAYPAL_CLIENT_ID'));
+        $this->gateway->setSecret(env('PAYPAL_CLIENT_SECRET'));  */
+        $this->gateway->setUsername('ltdss.jd_api1.gmail.com');
+        $this->gateway->setPassword('K2D6HFR5Z9X3DW7L');
+        $this->gateway->setSignature('A3bGH27SxpA5baY.y3vROHFTc9tZAdCGvFt2T0dt.0qfUQjur57X5peW');
+        $this->gateway->setTestMode(false);  //set it to 'false' when go live
+    }
+
+    public function index()
+    {
+        return view('payment');
+    }
+    public function charge_creditcard(Request $request){
+        // Example form data
+        $request->session()->flash('plan_id', $request->plan_id);
+        $request->session()->flash('client_id', $request->client_id);
+        dd("string");
+//dd($request->all());
+        $formInputData = array(
+            'firstName' => $request->input('firstName'),
+            //'lastName' => $request->input('lastName'),
+            'number' => $request->input('number'),
+            'expiryMonth' => $request->input('expiryMonth'),
+            'expiryYear'=> $request->input('expiryYear'),
+            'cvv'=> $request->input('cvv'),
+            'billingAddress1' => $request->input('billingAddress1'),
+            'billingPostcode' => $request->input('billingPostcode'),
+            'billingState' => 'california',
+            'billingCountry' => 'US',
+            //'billingPhone' => $request->input('billingPhone'),
+            'billingCity'=> $request->input('billingCity'),
+            'email' => $request->input('email')
+        );
+//dd($formInputData);
+        $card = new CreditCard($formInputData);
+//$number = $card->getNumber();
+//dd($number);
+//$arr1 = str_split($number,6);
+//dd($arr1);
+// Send purchase request
+        $response = $this->gateway->authorize(
+            [
+
+                'amount' => $_POST['amount'],
+                'currency' => 'USD',
+                'card' => $card,
+                'returnUrl' => url('paymentsuccess'),
+                'cancelUrl' => url('paymenterror'),
+            ]
+        )->send();
+        $response->getTransactionReference();
+//dd($response);
+// Process response
+        if ($response->isSuccessful()) {
+            $session_plan = session()->get('plan_id');
+            $session_client_id = session()->get('client_id');
+            $arr_body = $response->getData();
+            dd($arr_body);
+            // dd($arr_body['payer']['funding_instruments']['0']['credit_card']['number']);
+            $isPaymentExist = Payment::where('payment_id', $arr_body['id'])->first();
+            if(!$isPaymentExist)
+            {
+                $random = str_random(30);
+                $payment = new Payment;
+                $payment->payment_id = $arr_body['id'];
+                $payment->payer_id = $arr_body['transactions']['0']['related_resources']['0']['sale']['id'];
+                $payment->user_id = Auth::user()->id;
+                $payment->payer_email = $request->input('email');
+                $payment->amount = $arr_body['transactions'][0]['amount']['total'];
+                $payment->currency = env('PAYPAL_CURRENCY');
+                $payment->plan_id = $session_plan;
+                $payment->payment_status = $arr_body['transactions']['0']['related_resources']['0']['sale']['state'];
+                $payment->device_id = $random;
+                $payment->save();
+            }
+            //return "Payment is successful. Your transaction id is: ". $arr_body['id'];
+            $plan_days = Plan::with('month')->where('plans.id', $session_plan)->first();
+            $plan_month_days = $plan_days->month['month_days'];
+            // $random = str_random(30);
+            //dd($random);
+            $data = [
+                'random' => $random,
+                'session_plan' => $session_plan,
+                'payment_id' => $payment->id,
+                'amount' => $payment->amount,
+                'plan_month_days' => $plan_month_days,
+                'card_number' => $request->input('number'),
+                'expiryMonth' => $request->input('expiryMonth'),
+                'expiryYear'=> $request->input('expiryYear'),
+                'cvv'=> $request->input('cvv'),
+            ];
+            if(empty($session_client_id)){
+                // return "Asa";
+                $this->insert_to_client_list($data);
+                $msg = 'Kindly check your email for Lisence Key!';
+            }
+            else{
+                // echo $session_client_id;
+                // echo $session_plan;
+
+
+
+                $client = ClientList::find($session_client_id);
+                tap($client)->update([
+                    'plan_id' => $session_plan
+                ]);
+
+
+                // $client = ClientList::where('id', $session_client_id)
+                //       ->update(['plan_id' => $session_plan]);
+
+                // return $client;
+                ClientListPlans::where('clientlist_id', $session_client_id)
+                    ->update(['plan_status' => '0']);
+
+                $clientlist_plans =  array(
+                    // 'clientlist_id' => $session_client_id,
+                    'plan_id' => $session_plan,
+                    'user_id' => Auth::user()->id,
+                    'uniqueid'=> $client->uniqueid,
+                    'plan_status' => 1,
+                );
+                $client->clientlist_plans()->create($clientlist_plans);
+                // ClientListPlans::create($clientlist_plans);
+                // return "asa";
+                DeviceSlots::where('payment_id',0)->where('device_id', $client->uniqueid)->delete();
+
+                $res = DeviceSlots::whereNotNull('payment_id')
+                    ->where('device_id', $client->uniqueid)
+                    ->select('id','device_start_date','device_end_date','device_expiration_date')
+                    ->orderBY('id', 'desc')
+                    ->first();
+                // dd($res);
+                // return $res->device_expiration_date->isToday();
+                $today = Carbon::today()->format('Y-m-d');
+                $device_expiration_date = Carbon::parse($res->device_expiration_date)->format('Y-m-d');
+
+                $device_end_date = $res->device_end_date;
+
+                if($today <= $device_expiration_date)
+                {
+
+                    $device_date = $res->device_end_date;
+                    $plan_month = $plan_month_days/30;
+
+                    for ($i=0; $i < $plan_month ; $i++) {
+                        if($i == 0){
+                            $payment_id = $payment->id;
+                            $client = ClientList::find($session_client_id);
+                            tap($client)->update([
+                                // 'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                        }else{
+                            $payment_id = 0;
+                        }
+                        DeviceSlots::create(
+                            [
+                                'plan_id'=> $session_plan,
+                                'device_id' => $client->uniqueid,
+                                'device_id_d' => $client->id,
+                                'payment_id' => $payment_id,
+                                'user_id' => Auth::user()->id,
+                                'price' => $payment->amount,
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                    }
+
+                }
+                else{
+                    $device_date = Carbon::now();
+                    $plan_month = $plan_month_days/30;
+
+                    for ($i=0; $i < $plan_month ; $i++) {
+                        if($i == 0){
+                            $payment_id = $payment->id;
+                            $client = ClientList::find($session_client_id);
+                            tap($client)->update([
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                        }else{
+                            $payment_id = 0;
+                        }
+                        DeviceSlots::create(
+                            [
+                                'plan_id'=> $session_plan,
+                                'device_id' => $client->uniqueid,
+                                'device_id_d' => $client->id,
+                                'payment_id' => $payment_id,
+                                'user_id' => Auth::user()->id,
+                                'price' => $payment->amount,
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                    }
+                }
+
+
+                $msg = 'Your plan is upgraded successfully!';
+            }
+            $request->session()->flash('unique_id', $random);
+            $session = session()->get('unique_id');
+            $email = Auth::user()->email;
+            Mail::to($email)->send(new SendMail());
+            //dd($session);
+            return redirect('thanks')->with('status', $msg);
+
+        } elseif ($response->isRedirect()) {
+            //dd($response);
+
+            $response->redirect();
+
+        } else {
+
+            // Payment failed
+            echo $response->getMessage();
+        }
+    }
+    public function trail(Request $request)
+	{
+		if($request->input('payintegration'))
+            $request->session()->flash('plan_id', $request->plan_id);
+        $request->session()->flash('client_id', $request->client_id);
+        $request->session()->flash('amount', $request->amount);
+		$random = str_random(30);
+		$request->session()->flash('unique_id', $random);
+		$session_id = session()->get('plan_id');
+		$session = session()->all();
+		//dd($session);
+		$session_plan = session()->get('plan_id');
+        $session_client_id = session()->get('client_id');
+        $session_amount = session()->get('amount');
+		$plan_days = Plan::with('month')->where('plans.id', $session_plan)->first();
+                $plan_month_days = $plan_days->month['month_days'];
+		$data = [
+                    'random' => $random,
+                    'session_plan' => $session_plan,
+                    'amount' => $session_amount,
+                    'plan_month_days' => $plan_month_days,
+                ];
+					$payment = new Payment;
+                    $payment->payment_id = "free";
+                    $payment->payer_id = "trail";
+                    $payment->user_id = Auth::user()->id;
+                    $payment->payer_email = Auth::user()->email;
+                    $payment->amount = $session_amount;
+                    $payment->currency = "USD";
+                    $payment->plan_id = $session_plan;
+                    $payment->payment_status = "Completed";
+                    $payment->device_id = $random;
+                    $payment->save();
+		if(empty($session_client_id)){
+                    // return "Asa";
+                    $this->insert_to_client_list_trail($data);
+                }
+				else{
+                    $client = ClientList::find($session_client_id);
+                    tap($client)->update([
+                        'plan_id' => $session_plan
+                    ]);
+                    ClientListPlans::where('clientlist_id', $session_client_id)
+                        ->update(['plan_status' => '0']);
+
+                    $clientlist_plans =  array(
+                        // 'clientlist_id' => $session_client_id,
+                        'plan_id' => $session_plan,
+                        'user_id' => Auth::user()->id,
+                        'uniqueid'=> $client->uniqueid,
+                        'plan_status' => 1,
+                    );
+                    $client->clientlist_plans()->create($clientlist_plans);
+                    DeviceSlots::where('payment_id',0)->where('device_id', $client->uniqueid)->delete();
+
+                    $res = DeviceSlots::whereNotNull('payment_id')
+                        ->where('device_id', $client->uniqueid)
+                        ->select('device_start_date','device_end_date','device_expiration_date')
+                        ->orderBY('id', 'desc')
+                        ->first();
+                    $today = Carbon::today()->format('Y-m-d');
+                    $device_expiration_date = Carbon::parse($res->device_expiration_date)->format('Y-m-d');
+
+                    $device_end_date = $res->device_end_date;
+
+                    if($today <= $device_expiration_date)
+                    {
+
+                        $device_date = $res->device_end_date;
+
+                    }
+                    else{
+                        $device_date = Carbon::now();
+                    }
+
+                    $plan_month = $plan_month_days/30;
+
+                    for ($i=0; $i < $plan_month ; $i++) {
+                        if($i == 0){
+                            $payment_id = $payment->id;
+                            $client = ClientList::find($session_client_id);
+                            tap($client)->update([
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                        }else{
+                            $payment_id = 0;
+                        }
+                        DeviceSlots::create(
+                            [
+                                'plan_id'=> $session_plan,
+                                'device_id' => $client->uniqueid,
+                                'device_id_d' => $client->id,
+                                'payment_id' => $payment_id,
+                                'user_id' => Auth::user()->id,
+                                'price' => $payment->amount,
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                    }
+                }
+				$email = Auth::user()->email;
+                Mail::to($email)->send(new SendMail());
+                return redirect('thanks')->with('status', 'Kindly check your email for Lisence Key!');
+					
+	}
+	
+	public function thankYou() {
+		return view('user.thankYou');
+	}
+	
+	
+	
+	public function charge(Request $request)
+    {
+        // return"as";
+        //return $request->all();
+        if($request->input('payintegration'))
+            $request->session()->flash('plan_id', $request->plan_id);
+        $request->session()->flash('client_id', $request->client_id);
+        $request->session()->flash('amount', $request->amount);
+        //$session = session()->all();
+        //dd($session);
+
+        {
+            try {
+                $response = $this->gateway->purchase(array(
+                    'amount' => $_POST['amount'],
+                    'currency' => env('PAYPAL_CURRENCY'),
+                    'returnUrl' => url('paymentsuccess'),
+                    'cancelUrl' => url('paymenterror'),
+                ))->send();
+                //dd("trin");
+                if ($response->isRedirect()) {
+                    $response->redirect(); // this will automatically forward the customer
+                } else {
+                    // not successful
+                    return $response->getMessage();
+                }
+            } catch(Exception $e) {
+                return $e->getMessage();
+            }
+        }
+    }
+
+    public function payment_success(Request $request)
+    {
+        $session_plan = session()->get('plan_id');
+        $session_client_id = session()->get('client_id');
+        $session_amount = session()->get('amount');
+        // dump($session_plan);
+        // dump($session_client_id);
+        //dd($request->input('paymentId'));
+        // Once the transaction has been approved, we need to complete it.
+     //   dd($session_amount);
+        if ($request->input('paymentId') || $request->input('PayerID') )
+        {
+            $transaction = $this->gateway->completePurchase(array(
+                'payer_id'             => $request->input('PayerID'),
+                'amount' => $session_amount,
+                'transactionReference' => $request->input('paymentId'),
+            ));
+           // dd($transaction);
+            $response = $transaction->send();
+           // dd($response);
+            if ($response->isSuccessful())
+            {
+                //     // The customer has successfully paid.
+                $arr_body = $response->getData();
+                 //dd($request->input('PayerID'));			   // Insert transaction data into the database
+                $isPaymentExist = Payment::where('payment_id', $arr_body['PAYMENTINFO_0_TRANSACTIONID'])->first();
+                if(!$isPaymentExist)
+                {
+                    $random = str_random(30);
+
+                    $payment = new Payment;
+                    $payment->payment_id = $arr_body['PAYMENTINFO_0_TRANSACTIONID'];
+                    $payment->payer_id = $request->input('PayerID');
+                    $payment->user_id = Auth::user()->id;
+                    $payment->payer_email = Auth::user()->email;
+                    $payment->amount = $session_amount;
+                    $payment->currency = env('PAYPAL_CURRENCY');
+                    $payment->plan_id = $session_plan;
+                    $payment->payment_status = $arr_body['PAYMENTINFO_0_PAYMENTSTATUS'];
+                    $payment->device_id = $random;
+                    $payment->save();
+                }
+
+                $plan_days = Plan::with('month')->where('plans.id', $session_plan)->first();
+                $plan_month_days = $plan_days->month['month_days'];
+
+                // return $payment->id;
+                //return "Payment is successful. Your transaction id is: ". $arr_body['id'];
+                //$session = session()->all();
+                //dd($session);
+
+
+                //dd($random);
+                $data = [
+                    'random' => $random,
+                    'session_plan' => $session_plan,
+                    'payment_id' => $payment->id,
+                    'amount' => $payment->amount,
+                    'plan_month_days' => $plan_month_days,
+                ];
+                // $request->session()->flash('uniqueid', $random);
+                // $session = session()->get('uniqueid');
+                //dd($session);
+                if(empty($session_client_id)){
+                    // return "Asa";
+                    $this->insert_to_client_list($data);
+                }
+                else{
+// echo $session_client_id;
+// echo $session_plan;
+
+
+
+                    $client = ClientList::find($session_client_id);
+                    tap($client)->update([
+                        'plan_id' => $session_plan
+                    ]);
+
+
+                    // $client = ClientList::where('id', $session_client_id)
+                    //       ->update(['plan_id' => $session_plan]);
+
+                    // return $client;
+                    ClientListPlans::where('clientlist_id', $session_client_id)
+                        ->update(['plan_status' => '0']);
+
+                    $clientlist_plans =  array(
+                        // 'clientlist_id' => $session_client_id,
+                        'plan_id' => $session_plan,
+                        'user_id' => Auth::user()->id,
+                        'uniqueid'=> $client->uniqueid,
+                        'plan_status' => 1,
+                    );
+                    $client->clientlist_plans()->create($clientlist_plans);
+                    // ClientListPlans::create($clientlist_plans);
+// return "asa";
+                    DeviceSlots::where('payment_id',0)->where('device_id', $client->uniqueid)->delete();
+
+                    $res = DeviceSlots::whereNotNull('payment_id')
+                        ->where('device_id', $client->uniqueid)
+                        ->select('device_start_date','device_end_date','device_expiration_date')
+                        ->orderBY('id', 'desc')
+                        ->first();
+
+                    // return $res->device_expiration_date->isToday();
+                    $today = Carbon::today()->format('Y-m-d');
+                    $device_expiration_date = Carbon::parse($res->device_expiration_date)->format('Y-m-d');
+
+                    $device_end_date = $res->device_end_date;
+
+                    if($today <= $device_expiration_date)
+                    {
+
+                        $device_date = $res->device_end_date;
+
+                    }
+                    else{
+                        $device_date = Carbon::now();
+                    }
+
+                    $plan_month = $plan_month_days/30;
+
+                    for ($i=0; $i < $plan_month ; $i++) {
+                        if($i == 0){
+                            $payment_id = $payment->id;
+                            $client = ClientList::find($session_client_id);
+                            tap($client)->update([
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                        }else{
+                            $payment_id = 0;
+                        }
+                        DeviceSlots::create(
+                            [
+                                'plan_id'=> $session_plan,
+                                'device_id' => $client->uniqueid,
+                                'device_id_d' => $client->id,
+                                'payment_id' => $payment_id,
+                                'user_id' => Auth::user()->id,
+                                'price' => $payment->amount,
+                                'device_start_date' => Carbon::parse($device_date)->addMonths($i+1-1),
+                                'device_end_date' => Carbon::parse($device_date)->addMonths($i+1),
+                                'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                            ]);
+
+                    }
+
+
+                    // DeviceSlots::
+
+// return "successful";
+
+
+
+
+                    //     $task = ClientList::find($session_client_id);
+                    //     $task->device_status = "inactive";
+                    //     $task->save();
+                    //     $newTask = $task->replicate();
+                    //     $newTask->plan_id = $session_plan; // the new project_id
+                    //     $newTask->parent_id = $session_client_id; // the new project_id
+                    //     $newTask->payment_id = $payment->id; // the new project_id
+                    //     $newTask->device_status = "active"; // the new project_id
+                    //     // $newTask->renewal_date = Carbon::now(); // the new project_id
+                    //     // $newTask->plan_upgradation_date = Carbon::now(); // the new project_id
+                    //     $newTask->device_start_date = Carbon::now();
+                    //      // the new project_id
+                    //     $newTask->device_end_date = Carbon::now()->adddays($plan_month_days);
+                    //      // the new project_id
+                    //     // $newTask->renewal_date = Carbon::now(); // the new project_id
+                    //     $newTask->save();
+
+                }
+                $email = Auth::user()->email;
+                Mail::to($email)->send(new SendMail());
+                return redirect('devices')->with('status', 'Kindly check your email for Lisence Key!');
+            } else {
+                return $response->getMessage();
+            }
+        } else {
+            return 'Transaction is declined';
+        }
+    }
+
+    public function insert_to_client_list($data){
+        // dd($data);
+        $random = $data['random'];
+        $plan_id = $data['session_plan'];
+        $payment_id = $data['payment_id'];
+        $price = $data['amount'];
+        $plan_month_days = $data['plan_month_days'];
+
+        $client= ClientList::create([
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_id' => $plan_id,
+            'payment_id' => $payment_id,
+            'device_status' => "inactive",
+            'subscribed' => 1,
+            'device_start_date' => Carbon::now(),
+            'device_end_date' => Carbon::now()->adddays(30),
+            'device_expiration_date' => Carbon::now()->adddays($plan_month_days)
+        ]);
+
+        $clientlist_plans =  array(
+            'plan_id' => $plan_id,
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_status' => 1,
+        );
+        $client->clientlist_plans()->create($clientlist_plans);
+
+        $plan_month = $plan_month_days/30;
+
+        for ($i=0; $i < $plan_month ; $i++) {
+            // $i =
+            if($i == 0){
+                $payment_id = $payment_id;
+            }else{
+                $payment_id = 0;
+            }
+            DeviceSlots::create(
+                [
+                    'plan_id'=> $plan_id,
+                    'device_id' => $random,
+                    'device_id_d' => $client->id,
+                    'payment_id' => $payment_id,
+                    'user_id' => Auth::user()->id,
+                    'price' => $price,
+                    'device_start_date' => Carbon::now()->addMonths($i+1-1),
+                    'device_end_date' => Carbon::now()->addMonths($i+1),
+                    'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+                ]);
+        }
+    }public function insert_to_client_list_trail($data){
+        // dd($data);
+        $random = $data['random'];
+        $plan_id = $data['session_plan'];
+        $price = $data['amount'];
+        $plan_month_days = $data['plan_month_days'];
+
+        $client= ClientList::create([
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_id' => $plan_id,
+            'device_status' => "inactive",
+            'subscribed' => 1,
+            'device_start_date' => Carbon::now(),
+            'device_end_date' => Carbon::now()->adddays(5),
+            'device_expiration_date' => Carbon::now()->adddays($plan_month_days)
+        ]);
+
+        $clientlist_plans =  array(
+            'plan_id' => $plan_id,
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_status' => 1,
+        );
+        $client->clientlist_plans()->create($clientlist_plans);
+    }
+
+    public function payment_error()
+    {
+        return redirect('devices')->with('status', 'Payment has been cancelled by the user.');
+    }
+
+    public function plan_renewal(Request $request)
+    {
+
+        $number = $request->number;
+        $expiryMonth = $request->expiryMonth;
+        $expiryYear = $request->expiryYear;
+        $cvv = $request->cvv;
+        $device_id = $request->device_id;
+        $plan_id = $request->plan_id;
+
+        $today = Carbon::now()->format('Y-m-d');
+
+        DeviceSlots::
+        whereDate( 'device_end_date','<', $today)
+            ->where('payment_id',0)->update([
+                'payment_id' => 2
+            ]);
+
+
+        $device_slots = DeviceSlots::where('plan_id',$plan_id)
+            ->where('user_id',Auth::user()->id)
+            ->where('device_id_d', $device_id)
+            ->where('payment_id', 0)
+            ->groupBy('device_id_d')->get();
+        // echo "string";
+        // $device_slots = $db_data->where('payment_id' ,0)->get();
+        // dd($devic
+        // dd($device_slots);
+        if(sizeof($device_slots) > 0){
+            // dd("one device found to charge ");
+            $pcon =1;
+            $resp =   payment_process($device_slots, $this->gateway, $pcon);
+            // dd($resp);
+            if($resp == "this_device_is_not_expired"){
+                return redirect()->back()->with('pcon',"This device is not expired");
+            }
+            else{
+                return redirect()->back()->with('pcon',"You have successfully update your plan ");
+            }
+
+        }else{
+            // return "else";
+            $last_device_slots = DeviceSlots::where('plan_id',$plan_id)
+                ->where('user_id',Auth::user()->id)
+                ->where('device_id_d', $device_id)
+                ->where('payment_id','!=', 0)
+                ->select('*')
+                ->addSelect(DB::raw('device_id as uniqueid'))
+                ->get()->last();
+            // dd($last_device_slots );
+            // return $last_device_slots + ['abc' => 12];
+            $res =   payment_charge($last_device_slots , $this->gateway);
+            add_slots($last_device_slots, $res);
+            return redirect()->back()->with('pcon',"You have successfully update your plan.");
+
+            dd($last_device_slots);
+        }
+
+
+
+        // dd($device_slots);
+
+
+// if(sizeof($device_slots)>0){
+
+//       foreach ($device_slots as $key => $value) {
+
+//     $device_end_date = Carbon::parse($value->device_end_date)->format('Y-m-d');
+
+//         if($today >= $device_end_date){
+//             // echo $value->id;
+//           $res = $this->payment_success_renewal($value);
+
+//     dump("Charge Payment from Buyer after One Month");
+// // dd($res->payment_id);
+//         $device_slot = DeviceSlots::find($value->id);
+//          tap($device_slot)->update([
+//             'payment_id' => $res->id
+//         ]);
+
+// // exit();
+//     $client = ClientList::where('uniqueid',$value->device_id);
+//          tap($client)->update([
+//             'device_start_date' => $device_slot->device_start_date,
+//             'device_end_date' => $device_slot->device_end_date,
+//             'device_expiration_date' => $device_slot->device_expiration_date,
+//             'payment_id' => $res->id,
+//             'subscribed' => '1'
+//             ]);
+
+//               }
+//               else{
+//                 dump("xyz");
+//               }
+//           }
+
+//           dd("end");
+//         }
+
+
+        // echo Auth::user()->id;
+        // return $request->all();
+        // return redirect()->back();
+        // dd("dfd");
+    }
+
+//     public function payment_success_renewal($data){
+
+//      $formInputData = array(
+//         'firstName' => 'noman',
+//         'lastName' => 'shah',
+//         'number' => '4329068336469187',
+//         'expiryMonth' =>'02',
+//         'expiryYear'=>'2023',
+//         'cvv'=>'123',
+//         'billingAddress1' =>'dublin',
+//         'billingPostcode' =>'12345',
+//         'billingState' =>'california',
+//         'billingCountry' =>'US',
+//         'billingPhone' =>'03038869074',
+//         'billingCity'=>'dublin',
+//         'email' =>'nomanshah587@yahoo.com'
+//               );
+// //dd($formInputData);
+//         $card = new CreditCard($formInputData);
+//         // Send purchase request
+//         $response = $this->gateway->purchase(
+//             [
+//                 'amount' => $data->price,
+//                 'currency' => 'USD',
+//                 'card' => $card,
+//             ]
+//         )->send();
+//         // dd($response);
+//         // Process response
+//         if ($response->isSuccessful()) {
+
+//                 $arr_body = $response->getData();
+//               // dd($arr_body);            // Insert transaction data into the database
+//                 $isPaymentExist = Payment::where('payment_id', $arr_body['id'])->first();
+//                 if(!$isPaymentExist)
+//                 {
+//                     $payment = new Payment;
+//                     $payment->payment_id = $arr_body['id'];
+//                     $payment->payer_id = '123';
+//                     $payment->user_id = $data->user_id;
+//                     $payment->payer_email = 'aliraza@a.com';
+//                     $payment->amount = $arr_body['transactions'][0]['amount']['total'];
+//                     $payment->currency = env('PAYPAL_CURRENCY');
+//                     $payment->plan_id = $data->plan_id;
+//                     $payment->payment_status = $arr_body['state'];
+//                     // dd($payment);
+//                     $payment->save();
+//                     return $payment;
+//                 }
+
+//         } elseif ($response->isRedirect()) {
+//            // dd($response);
+//             // Redirect to offsite payment gateway
+//             $response->redirect();
+//         } else {
+//             // Payment failed
+//             echo $response->getMessage();
+//         }
+//          exit();
+
+//     }
+    public function charge_difference(Request $request){
+        $device_id = $request->device_id;
+        // $amount = $request->difference;
+        // $data = array('device_id' => $device_id, 'amount' => $amount);
+        // return $data;
+        if($request->price > 0){
+            $data = $request->all() + ['user_id' => Auth::user()->id ];
+            $res =   payment_charge($data, $this->gateway);
+            if($res){
+
+                DeviceSlots::where('payment_id',0)->where('device_id_d', $device_id)->delete();
+
+                ClientList::find($device_id)->update([
+                    'subscribed' => '0'
+                ]);
+            }
+        }
+        else{
+            // return "subscribed";
+            DeviceSlots::where('payment_id',0)->where('device_id_d', $device_id)->delete();
+
+            ClientList::find($device_id)->update([
+                'subscribed' => '0'
+            ]);
+        }
+        return "success";
+    }
+}

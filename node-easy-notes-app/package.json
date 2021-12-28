@@ -1,0 +1,24 @@
+{
+  "name": "node-easy-notes-app",
+  "version": "1.0.0",
+  "description": "\u0016Never miss a thing in Life. Take notes quickly. Organize and keep track of all your notes.",
+  "main": "entry point: (index.js) server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Express",
+    "RestAPI",
+    "MongoDB",
+    "Mongoose",
+    "Notes"
+  ],
+  "author": "Sajid",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.13"
+  }
+}

@@ -1,0 +1,277 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Mail\SendMail;
+use App\Mail\UpgradeMail;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PaymentSuccessEmail;
+use App\Payment;
+use App\ClientList;
+use App\DeviceSlots;
+use App\ClientListPlans;
+use App\Plan;
+use Carbon\Carbon;
+use DB;
+use DateTime;
+use DateTimeZone;
+
+use Redirect;
+use Session;
+
+class StripePaymentController extends Controller
+{
+    public function pay(Request $request){
+		//$new_str = str_replace(' ', '', $request->card_number);
+		//dd($new_str);
+        $request->session()->flash('client_id', $request->client_id);
+        $request->session()->flash('oldkey', $request->old_key);
+        $request->session()->flash('plan_id', $request->plan_id);
+        $session_old_key = session()->get('oldkey');
+        //dd($session_old_key);
+        \Stripe\Stripe::setApiKey ( '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');
+        try {
+            $response = \Stripe\Charge::create ( array (
+                "amount" => $request->input('amount') *100,
+                "currency" => "usd",
+                "source" => $request->input ( 'stripeToken' ), // obtained with Stripe.js
+            ) );
+            //dd($response);
+            $isPaymentExist = Payment::where('payment_id', $response['balance_transaction'])->first();
+            if(!$isPaymentExist && !$session_old_key)
+            {
+                $random = str_random(30);
+                $payment = new Payment;
+                $payment->payment_id = $response['balance_transaction'];
+                $payment->payer_id = $response['id'];
+                $payment->user_id = Auth::user()->id;
+                $payment->payer_email = $request->input('email');
+                $payment->amount = $request->input('amount');
+                $payment->currency = $response['currency'];
+                $payment->plan_id = $request->input('plan_id');
+                $payment->payment_status = $response['status'];
+                $payment->device_id = $random;
+                $payment->save();
+            }
+            else{
+                $payment = new Payment;
+                $payment->payment_id = $response['balance_transaction'];
+                $payment->payer_id = $response['id'];
+                $payment->user_id = Auth::user()->id;
+                $payment->payer_email = $request->input('email');
+                $payment->amount = $request->input('amount');
+                $payment->currency = $response['currency'];
+                $payment->plan_id = $request->input('plan_id');
+                $payment->payment_status = $response['status'];
+                $payment->device_id = $session_old_key;
+                $payment->save();
+            }
+            $session_client_id = session()->get('client_id');
+            $plan_days = Plan::with('month')->where('plans.id', $payment->plan_id)->first();
+            $plan_month_days = $plan_days->month['month_days'];
+            $data = [
+                'random' => $payment->device_id,
+                'session_plan' => $payment->plan_id,
+                'payment_id' => $payment->id,
+                'amount' => $payment->amount,
+                'plan_month_days' => $plan_month_days,
+                'card' => $request->input('card_number'),
+                'cvv' => $request->input('cvv'),
+                'card_expire_month' => $request->input('card_expire_month'),
+                'card_expire_year' => $request->input('card_expire_year'),
+            ];
+            if(empty($session_client_id)){
+                //dd($request->input('$client_id'));
+                $this->insert_to_client_list($data);
+            }
+            else {
+                $client = ClientList::find($session_client_id);
+                tap($client)->update([
+                    'plan_id' => $payment->plan_id,
+                    $card = $data['card'],
+                $arr = str_split($card,6),
+                $cvv = $data['cvv'],
+                $card_expire_month = $data['card_expire_month'],
+                $card_expire_year = $data['card_expire_year'],
+                    'card_number_I' => $arr['0'],
+                    'card_number_II' => $arr['1'],
+                    'card_number_III' => $arr['2'],
+                    'cvv' => $cvv,
+                    'card_expire_month' => $card_expire_month,
+                    'card_expire_year' => $card_expire_year,
+                ]);
+                ClientListPlans::where('clientlist_id', $session_client_id)
+                    ->update(['plan_status' => '0']);
+                $clientlist_plans = array(
+                    // 'clientlist_id' => $session_client_id,
+                    'plan_id' => $payment->plan_id,
+                    'user_id' => Auth::user()->id,
+                    'uniqueid' => $client->uniqueid,
+                    'plan_status' => 1,
+                );
+                $client->clientlist_plans()->create($clientlist_plans);
+                DeviceSlots::where('payment_id', 0)->where('device_id', $client->uniqueid)->delete();
+
+                $res = DeviceSlots::whereNotNull('payment_id')
+                    ->where('device_id', $client->uniqueid)
+                    ->select('device_start_date', 'device_end_date', 'device_expiration_date')
+                    ->orderBY('id', 'desc')
+                    ->first();
+                $today = Carbon::today()->format('Y-m-d');
+                $device_expiration_date = Carbon::parse($res->device_expiration_date)->format('Y-m-d');
+
+                $device_end_date = $res->device_end_date;
+
+                if ($today <= $device_expiration_date) {
+
+                    $device_date = $res->device_end_date;
+
+                } else {
+                    $device_date = Carbon::now();
+                }
+
+                $plan_month = $plan_month_days / 30;
+
+                for ($i = 0; $i < $plan_month; $i++) {
+                    if ($i == 0) {
+                        $payment_id = $payment->id;
+                        $client = ClientList::find($session_client_id);
+                        tap($client)->update([
+                            'device_start_date' => Carbon::parse($device_date)->addMonths($i + 1 - 1),
+                            'device_end_date' => Carbon::parse($device_date)->addMonths($i + 1),
+                            'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                        ]);
+
+                    } else {
+                        $payment_id = 0;
+                    }
+                    DeviceSlots::create(
+                        [
+                            'plan_id' => $payment->plan_id,
+                            'device_id' => $client->uniqueid,
+                            'device_id_d' => $client->id,
+                            'payment_id' => $payment_id,
+                            'user_id' => Auth::user()->id,
+                            'price' => $payment->amount,
+                            'device_start_date' => Carbon::parse($device_date)->addMonths($i + 1 - 1),
+                            'device_end_date' => Carbon::parse($device_date)->addMonths($i + 1),
+                            'device_expiration_date' => Carbon::parse($device_date)->adddays($plan_month_days),
+                        ]);
+                }
+            }
+            Session::flash ( 'success-message', 'Payment done successfully !' );
+			$email = Auth::user()->email;
+            if(empty($session_client_id)){
+            Mail::to($email)->send(new SendMail($data));
+            return redirect('thanks')->with('status', 'Kindly check your email for Lisence Key!');}
+            else{
+                Mail::to($email)->send(new UpgradeMail($data));
+                return redirect('thanks')->with('status', 'Kindly check your email for Lisence Key!');
+            }
+        }catch ( \Exception $e ) {
+			return redirect('checkout')->with('msg', $e->getError()->message);
+        }
+    }
+    public function thankYou() {
+        return view('user.thankYou');
+    }
+    public function insert_to_client_list($data){
+        // dd($data);
+        $random = $data['random'];
+        $plan_id = $data['session_plan'];
+        $payment_id = $data['payment_id'];
+        $price = $data['amount'];
+        $plan_month_days = $data['plan_month_days'];
+        $card = $data['card'];
+		$card_without_space = str_replace(' ', '', $card);
+		$arr = str_split($card_without_space,6);
+        $cvv = $data['cvv'];
+        $card_expire_month = $data['card_expire_month'];
+        $card_expire_year = $data['card_expire_year'];
+
+        $client= ClientList::create([
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_id' => $plan_id,
+            'payment_id' => $payment_id,
+            'device_status' => "inactive",
+            'subscribed' => 1,
+            'device_start_date' => Carbon::now(),
+            'device_end_date' => Carbon::now()->adddays(30),
+            'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+            'card_number_I' => $arr['0'],
+            'card_number_II' => $arr['1'],
+            'card_number_III' => $arr['2'],
+            'cvv' => $cvv,
+            'card_expire_month' => $card_expire_month,
+            'card_expire_year' => $card_expire_year,
+
+        ]);
+
+        $clientlist_plans =  array(
+            'plan_id' => $plan_id,
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_status' => 1,
+        );
+        $client->clientlist_plans()->create($clientlist_plans);
+
+        $plan_month = $plan_month_days/30;
+
+        for ($i=0; $i < $plan_month ; $i++) {
+            // $i =
+            if($i == 0){
+                $payment_id = $payment_id;
+            }else{
+                $payment_id = 0;
+            }
+            DeviceSlots::create(
+                [
+                    'plan_id'=> $plan_id,
+                    'device_id' => $random,
+                    'device_id_d' => $client->id,
+                    'payment_id' => $payment_id,
+                    'user_id' => Auth::user()->id,
+                    'price' => $price,
+                    'device_start_date' => Carbon::now()->addMonths($i+1-1),
+                    'device_end_date' => Carbon::now()->addMonths($i+1),
+                    'device_expiration_date' => Carbon::now()->adddays($plan_month_days),
+                ]);
+        }
+    }
+    public function trialVersionUSer(){
+        {
+            $random = str_random(30);
+            $payment = new Payment;
+            $payment->payment_id = "free";
+            $payment->payer_id = "trail";
+            $payment->user_id = Auth::user()->id;
+            $payment->payer_email = Auth::user()->email;
+            $payment->amount = '0';
+            $payment->currency = "USD";
+            $payment->plan_id = 16;
+            $payment->payment_status = "Completed";
+            $payment->device_id = $random;
+            $payment->save();
+        }
+        $client= ClientList::create([
+            'user_id' => Auth::user()->id,
+            'uniqueid'=> $random,
+            'plan_id' => 16,
+            'payment_id' => $payment->payment_id,
+            'device_status' => "inactive",
+            'subscribed' => 1,
+            'device_start_date' => Carbon::now(),
+            'device_end_date' => Carbon::now()->adddays(3),
+            'device_expiration_date' => Carbon::now()->adddays(3),
+
+        ]);
+		$data = [
+                'random' => $client->uniqueid,];
+				$email = Auth::user()->email;
+				Mail::to($email)->send(new SendMail($data));
+        return redirect('thanks')->with('status', 'Kindly check your email for Lisence Key!');
+    }
+}
