@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
             }
         }
-        webView.loadUrl("https://www.yahoo.com")
+        webView.loadUrl("http://localhost:3000")
 
     }
 }
